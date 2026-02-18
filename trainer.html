@@ -20,23 +20,31 @@
         .model-name { font-size: 1.2rem; font-weight: 600; color: white; }
         .model-desc { font-size: 0.85rem; color: #8f8faf; }
         .input-container { background: rgba(30,30,50,0.5); border-radius: 40px; padding: 40px; margin: 40px 0; backdrop-filter: blur(10px); }
-        .prompt-input { width: 100%; padding: 25px; background: rgba(20,20,35,0.9); border: 2px solid rgba(255,255,255,0.05); border-radius: 25px; color: white; font-size: 1.1rem; }
+        .prompt-input { width: 100%; padding: 25px; background: rgba(20,20,35,0.9); border: 2px solid rgba(255,255,255,0.05); border-radius: 25px; color: white; font-size: 1.1rem; resize: vertical; }
         .prompt-input:focus { outline: none; border-color: #a688ff; }
-        .button-group { display: flex; gap: 20px; justify-content: center; margin-top: 30px; }
-        .primary-btn { background: linear-gradient(135deg, #a688ff, #8a6aff); border: none; color: white; padding: 18px 50px; border-radius: 50px; font-size: 1.2rem; cursor: pointer; }
-        .secondary-btn { background: transparent; border: 2px solid rgba(255,255,255,0.1); color: #b0b0d0; padding: 18px 40px; border-radius: 50px; cursor: pointer; }
+        .button-group { display: flex; gap: 20px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
+        .primary-btn { background: linear-gradient(135deg, #a688ff, #8a6aff); border: none; color: white; padding: 18px 50px; border-radius: 50px; font-size: 1.2rem; cursor: pointer; transition: 0.3s; }
+        .primary-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(166,136,255,0.4); }
+        .secondary-btn { background: transparent; border: 2px solid rgba(255,255,255,0.1); color: #b0b0d0; padding: 18px 40px; border-radius: 50px; cursor: pointer; transition: 0.3s; }
+        .secondary-btn:hover { border-color: #a688ff; color: #a688ff; }
         .response-area { margin-top: 50px; display: none; }
-        .response-card { background: linear-gradient(135deg, #1a1a30, #14142a); border-radius: 40px; padding: 40px; }
-        .examples-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 25px; margin: 60px 0; }
-        .example-card { background: rgba(30,30,50,0.5); border-radius: 25px; padding: 25px; cursor: pointer; transition: 0.3s; }
-        .example-card:hover { transform: translateY(-5px); border-color: #a688ff; }
-        .back-link { display: inline-flex; align-items: center; gap: 10px; color: #a688ff; text-decoration: none; margin: 30px 0; }
+        .response-card { background: linear-gradient(135deg, #1a1a30, #14142a); border-radius: 40px; padding: 40px; border: 1px solid rgba(166,136,255,0.3); }
+        .response-header { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; }
+        .robot-avatar { width: 70px; height: 70px; background: #a688ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; }
+        .response-content { background: rgba(0,0,0,0.3); border-radius: 25px; padding: 30px; color: #e0e0e0; font-size: 1.1rem; line-height: 1.7; border-left: 5px solid #a688ff; white-space: pre-wrap; }
         .loader { border: 4px solid rgba(166,136,255,0.3); border-top: 4px solid #a688ff; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin: 30px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .examples-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 25px; margin: 60px 0; }
+        .example-card { background: rgba(30,30,50,0.5); border-radius: 25px; padding: 25px; cursor: pointer; transition: 0.3s; border: 1px solid rgba(255,255,255,0.03); }
+        .example-card:hover { transform: translateY(-5px); border-color: #a688ff; }
+        .example-card h4 { color: #a688ff; margin-bottom: 10px; }
+        .back-link { display: inline-flex; align-items: center; gap: 10px; color: #a688ff; text-decoration: none; margin: 30px 0; }
+        .deepseek-badge { background: rgba(166,136,255,0.2); border-radius: 50px; padding: 8px 20px; display: inline-block; color: #a688ff; font-weight: 600; margin-top: 10px; }
     </style>
 </head>
 <body>
 <div class="container">
+    <!-- ШАПКА -->
     <header class="header">
         <div class="logo">
             <div class="logo-icon"><i class="fas fa-brain"></i></div>
@@ -48,148 +56,177 @@
             <a href="trainer.html" class="active">Тренажёр</a>
             <a href="#">Блог</a>
         </nav>
+        <div class="btn-glow"><i class="fas fa-robot"></i> Начать</div>
     </header>
 
-    <a href="prompts.html" class="back-link"><i class="fas fa-arrow-left"></i> Назад</a>
+    <a href="prompts.html" class="back-link"><i class="fas fa-arrow-left"></i> Вернуться к уроку</a>
 
+    <!-- ГЕРОЙ -->
     <div class="trainer-hero">
         <h1 class="section-title">🧪 Тренажёр <span>промптов</span></h1>
-        <p style="color: #b0b0d0;">Пишите промпты и получайте ответы от нейросети</p>
+        <p style="color: #b0b0d0; max-width: 700px; margin: 20px auto;">Пишите промпты и получайте ответы от настоящего ИИ — DeepSeek!</p>
+        <div class="deepseek-badge"><i class="fas fa-bolt"></i> Работает на DeepSeek API</div>
     </div>
 
+    <!-- ВЫБОР МОДЕЛИ (ДЛЯ КРАСОТЫ) -->
     <div class="model-selector">
-        <div class="model-card active" data-model="mistral">
-            <div class="model-icon"><i class="fas fa-bolt"></i></div>
-            <div class="model-name">Mistral 7B</div>
-            <div class="model-desc">Быстрая и точная</div>
-        </div>
-        <div class="model-card" data-model="llama">
+        <div class="model-card active" data-model="deepseek">
             <div class="model-icon"><i class="fas fa-brain"></i></div>
-            <div class="model-name">Llama 2</div>
-            <div class="model-desc">Мощная от Meta</div>
+            <div class="model-name">DeepSeek</div>
+            <div class="model-desc">Умный ИИ</div>
         </div>
-        <div class="model-card" data-model="zephyr">
-            <div class="model-icon"><i class="fas fa-wind"></i></div>
-            <div class="model-name">Zephyr</div>
-            <div class="model-desc">Оптимизированная</div>
+        <div class="model-card" data-model="creative">
+            <div class="model-icon"><i class="fas fa-feather"></i></div>
+            <div class="model-name">Творческий</div>
+            <div class="model-desc">Креативный режим</div>
+        </div>
+        <div class="model-card" data-model="precise">
+            <div class="model-icon"><i class="fas fa-microscope"></i></div>
+            <div class="model-name">Точный</div>
+            <div class="model-desc">Фактический режим</div>
         </div>
     </div>
 
+    <!-- ОСНОВНОЙ ИНТЕРФЕЙС -->
     <div class="input-container">
-        <textarea id="promptInput" class="prompt-input" rows="5" placeholder="Напишите промпт..."></textarea>
+        <textarea id="promptInput" class="prompt-input" rows="5" placeholder="Напишите ваш промпт... Например: Объясни, как работают нейросети, простыми словами"></textarea>
         <div class="button-group">
             <button id="sendBtn" class="primary-btn"><i class="fas fa-paper-plane"></i> Отправить</button>
             <button id="clearBtn" class="secondary-btn"><i class="fas fa-undo"></i> Очистить</button>
         </div>
     </div>
 
+    <!-- ОТВЕТ -->
     <div id="responseArea" class="response-area">
         <div class="response-card">
-            <div id="aiResponse" style="color:white;"></div>
+            <div class="response-header">
+                <div class="robot-avatar"><i class="fas fa-robot"></i></div>
+                <div>
+                    <h3 style="color:white;">Ответ DeepSeek</h3>
+                    <p id="modelInfo" style="color:#8f8faf;">Модель: DeepSeek</p>
+                </div>
+            </div>
+            <div id="aiResponse" class="response-content"></div>
         </div>
     </div>
 
+    <!-- ПРИМЕРЫ -->
     <h2 style="text-align:center; color:white; margin:60px 0 40px;">📚 Примеры промптов</h2>
     <div class="examples-grid">
-        <div class="example-card" onclick="useExample('Напиши пост для Instagram о пользе медитации')">
-            <h4 style="color:#a688ff;">📝 Пост для Instagram</h4>
-            <p style="color:#b0b0d0;">Напиши пост для Instagram о пользе медитации</p>
+        <div class="example-card" onclick="useExample('Напиши пост для Instagram о пользе утренней медитации. Используй эмодзи и хештеги.')">
+            <h4>📝 Пост для Instagram</h4>
+            <p style="color:#b0b0d0;">Напиши пост для Instagram о пользе утренней медитации</p>
         </div>
-        <div class="example-card" onclick="useExample('Объясни квантовую физику ребёнку')">
-            <h4 style="color:#a688ff;">🔬 Для ребёнка</h4>
+        <div class="example-card" onclick="useExample('Объясни квантовую физику так, как будто я пятилетний ребёнок. Используй простые аналогии.')">
+            <h4>🔬 Для ребёнка</h4>
             <p style="color:#b0b0d0;">Объясни квантовую физику ребёнку</p>
         </div>
-        <div class="example-card" onclick="useExample('Напиши функцию на JavaScript')">
-            <h4 style="color:#a688ff;">💻 Код</h4>
-            <p style="color:#b0b0d0;">Напиши функцию на JavaScript</p>
+        <div class="example-card" onclick="useExample('Напиши функцию на JavaScript, которая сортирует массив чисел. Добавь комментарии.')">
+            <h4>💻 Код на JS</h4>
+            <p style="color:#b0b0d0;">Функция сортировки на JavaScript</p>
+        </div>
+        <div class="example-card" onclick="useExample('Придумай 5 креативных идей для свидания в дождливую погоду.')">
+            <h4>❤️ Идеи для свидания</h4>
+            <p style="color:#b0b0d0;">5 идей для свидания</p>
         </div>
     </div>
+
+    <!-- ФУТЕР -->
+    <footer class="footer">
+        <div>© 2025 NeuroGuide • Тренажёр на DeepSeek</div>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-telegram"></i></a>
+            <a href="#"><i class="fab fa-vk"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+        </div>
+    </footer>
 </div>
 
 <script>
-// 🔐 ВАШ ТОКЕН
-const HF_TOKEN = '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';
+// 🔐 ВАШ КЛЮЧ DEEPSEEK - ПОЛУЧИТЕ НА platform.deepseek.com
+const DEEPSEEK_API_KEY = 'sk-acc1629a776b4d4bad842337c6a790c4'; // ЗАМЕНИТЕ НА СВОЙ!
 
-// Модели
+// Модели (разные параметры для одного API)
 const MODELS = {
-    mistral: { name: 'Mistral 7B', api: 'mistralai/Mistral-7B-Instruct-v0.1' },
-    llama: { name: 'Llama 2', api: 'meta-llama/Llama-2-7b-chat-hf' },
-    zephyr: { name: 'Zephyr', api: 'HuggingFaceH4/zephyr-7b-beta' }
+    deepseek: { name: 'DeepSeek', temperature: 0.7 },
+    creative: { name: 'Творческий', temperature: 1.0 },
+    precise: { name: 'Точный', temperature: 0.3 }
 };
 
-let currentModel = 'mistral';
+let currentModel = 'deepseek';
 
 // Функция для примеров
 function useExample(text) {
-    const input = document.getElementById('promptInput');
-    if (input) {
-        input.value = text;
-        input.focus();
-    }
+    document.getElementById('promptInput').value = text;
+    document.getElementById('promptInput').focus();
 }
 
-async function askHuggingFace(prompt, modelKey) {
+// ЗАПРОС К DEEPSEEK API
+async function askDeepSeek(prompt, modelKey) {
     const model = MODELS[modelKey];
     
-    // Список прокси для обхода CORS
-    const proxies = [
-        'https://cors-anywhere.herokuapp.com/',
-        'https://thingproxy.freeboard.io/fetch/',
-        'https://api.allorigins.win/get?url='
-    ];
-    
-    // Пробуем каждый прокси по очереди
-    for (const proxyUrl of proxies) {
-        try {
-            console.log(`Пробуем прокси: ${proxyUrl}`);
-            
-            let apiUrl = `https://api-inference.huggingface.co/models/${model.api}`;
-            
-            // Для AllOrigins нужно кодировать URL
-            let finalUrl = proxyUrl;
-            if (proxyUrl.includes('allorigins')) {
-                finalUrl += encodeURIComponent(apiUrl);
-                // AllOrigins требует GET, но мы можем использовать POST через их API
-                const response = await fetch(finalUrl, { method: 'GET' });
-                const data = await response.json();
-                // Для AllOrigins нужна дополнительная обработка
-                if (data.contents) {
-                    const result = JSON.parse(data.contents);
-                    let answer = result[0]?.generated_text || result[0] || 'Нет ответа';
-                    return { success: true, message: answer };
-                }
-            } else {
-                finalUrl += apiUrl;
-                const response = await fetch(finalUrl, {
-                    headers: { 
-                        'Authorization': `Bearer ${HF_TOKEN}`,
-                        'Content-Type': 'application/json'
-                    },
-                    method: "POST",
-                    body: JSON.stringify({ 
-                        inputs: prompt,
-                        parameters: { max_new_tokens: 500 }
-                    })
-                });
-                
-                if (response.ok) {
-                    const result = await response.json();
-                    let answer = result[0]?.generated_text || result[0] || 'Нет ответа';
-                    return { success: true, message: answer };
-                }
-            }
-        } catch (error) {
-            console.log(`Прокси ${proxyUrl} не сработал, пробуем следующий...`);
-        }
+    // Проверяем ключ
+    if (!DEEPSEEK_API_KEY || DEEPSEEK_API_KEY === 'sk-acc1629a776b4d4bad842337c6a790c4') {
+        return {
+            success: false,
+            message: '❌ Вставьте ваш DeepSeek API ключ в файл trainer.html!\n\nПолучите его на platform.deepseek.com'
+        };
     }
     
-    return { 
-        success: false, 
-        message: '❌ Все прокси недоступны. Попробуйте позже.' 
-    };
+    try {
+        console.log('Отправляем запрос к DeepSeek...');
+        
+        const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+            },
+            body: JSON.stringify({
+                model: 'deepseek-chat',
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'Ты — DeepSeek, полезный ассистент. Ты помогаешь пользователям учиться писать промпты. Отвечай подробно, понятно и с примерами. Используй русский язык.'
+                    },
+                    {
+                        role: 'user',
+                        content: prompt
+                    }
+                ],
+                temperature: model.temperature,
+                max_tokens: 2000
+            })
+        });
+        
+        console.log('Статус ответа:', response.status);
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Ошибка API:', errorData);
+            throw new Error(`Ошибка ${response.status}: ${errorData.error?.message || 'Неизвестная ошибка'}`);
+        }
+        
+        const data = await response.json();
+        console.log('Ответ получен:', data);
+        
+        const answer = data.choices[0].message.content;
+        
+        return {
+            success: true,
+            message: answer
+        };
+        
+    } catch (error) {
+        console.error('Детали ошибки:', error);
+        return {
+            success: false,
+            message: `❌ Ошибка: ${error.message}\n\nПроверьте ключ API и интернет-соединение.`
+        };
+    }
 }
 
-// Запуск после загрузки страницы
+// ЗАГРУЗКА СТРАНИЦЫ
 document.addEventListener('DOMContentLoaded', function() {
     const modelCards = document.querySelectorAll('.model-card');
     const promptInput = document.getElementById('promptInput');
@@ -197,6 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const clearBtn = document.getElementById('clearBtn');
     const responseArea = document.getElementById('responseArea');
     const aiResponse = document.getElementById('aiResponse');
+    const modelInfo = document.getElementById('modelInfo');
 
     if (!sendBtn || !promptInput) return;
 
@@ -206,20 +244,38 @@ document.addEventListener('DOMContentLoaded', function() {
             modelCards.forEach(c => c.classList.remove('active'));
             this.classList.add('active');
             currentModel = this.dataset.model;
+            if (modelInfo) {
+                modelInfo.textContent = `Модель: ${MODELS[currentModel].name}`;
+            }
         });
     });
 
-    // Отправка
+    // Отправка промпта
     sendBtn.addEventListener('click', async function() {
         const prompt = promptInput.value.trim();
-        if (!prompt) return alert('Напишите промпт!');
-        if (!HF_TOKEN) return alert('Токен не настроен!');
-
-        aiResponse.innerHTML = '<div class="loader"></div>';
+        
+        if (!prompt) {
+            alert('Напишите промпт!');
+            return;
+        }
+        
+        // Показываем загрузку
+        aiResponse.innerHTML = '<div class="loader"></div><p style="text-align:center;">DeepSeek думает...</p>';
         responseArea.style.display = 'block';
+        if (modelInfo) {
+            modelInfo.textContent = `Модель: ${MODELS[currentModel].name} (отправка...)`;
+        }
 
-        const result = await askHuggingFace(prompt, currentModel);
-        aiResponse.innerHTML = result.success ? result.message.replace(/\n/g,'<br>') : result.message;
+        // Получаем ответ
+        const result = await askDeepSeek(prompt, currentModel);
+        
+        if (result.success) {
+            aiResponse.innerHTML = result.message.replace(/\n/g, '<br>');
+            modelInfo.textContent = `Модель: ${MODELS[currentModel].name} (ответ получен)`;
+        } else {
+            aiResponse.innerHTML = result.message;
+            modelInfo.textContent = `Модель: ${MODELS[currentModel].name} (ошибка)`;
+        }
     });
 
     // Очистка
@@ -230,7 +286,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Ctrl+Enter
     promptInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && e.ctrlKey) sendBtn.click();
+        if (e.key === 'Enter' && e.ctrlKey) {
+            sendBtn.click();
+        }
     });
 });
 </script>
