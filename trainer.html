@@ -646,83 +646,70 @@
         }
         
         // Инициализация при загрузке
-        document.addEventListener('DOMContentLoaded', function() {
-            const modelCards = document.querySelectorAll('.model-card');
-            const promptInput = document.getElementById('promptInput');
-            const sendBtn = document.getElementById('sendBtn');
-            const clearBtn = document.getElementById('clearBtn');
-            const responseArea = document.getElementById('responseArea');
-            const aiResponse = document.getElementById('aiResponse');
-            const modelInfo = document.getElementById('modelInfo');
-            
-            // Выбор модели
-            modelCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    modelCards.forEach(c => c.classList.remove('active'));
-                    this.classList.add('active');
-                    currentModel = this.getAttribute('data-model');
-                    modelInfo.textContent = `Модель: ${MODELS[currentModel].name}`;
-                });
-            });
-            
-            // Отправка промпта
-            sendBtn.addEventListener('click', async function() {
-                const prompt = promptInput.value.trim();
-                
-                if (!prompt) {
-                    alert('Напишите промпт!');
-                    return;
-                }
-                sendBtn.addEventListener('click', async function() {
-                console.log('🔵 КНОПКА НАЖАТА!'); // ЭТО ДОЛЖНО ПОЯВИТЬСЯ В КОНСОЛИ
-                
-                const prompt = promptInput.value.trim();
-                console.log('🔵 ПРОМПТ:', prompt);
-                
-                if (!prompt) {
-                    alert('Напишите промпт!');
-                    return;
-                }
-                
-                console.log('🔵 ТОКЕН:', HF_TOKEN ? 'Есть' : 'Нет');
-                console.log('🔵 ДЛИНА ТОКЕНА:', HF_TOKEN ? HF_TOKEN.length : 0);
-                
-                // Проверка токена
-                if (!HF_TOKEN || HF_TOKEN === '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') {
-                    alert('⚠️ Токен не настроен! Свяжитесь с администратором.');
-                    return;
-                }
-                
-                // Показываем загрузку
-                aiResponse.innerHTML = '<div class="loader"></div><p style="text-align: center;">Нейросеть думает...</p>';
-                modelInfo.textContent = `Модель: ${MODELS[currentModel].name} (отправка запроса)`;
-                responseArea.style.display = 'block';
-                
-                // Получаем ответ
-                const result = await askHuggingFace(prompt, currentModel);
-                
-                if (result.success) {
-                    aiResponse.innerHTML = result.message.replace(/\n/g, '<br>');
-                    modelInfo.textContent = `Модель: ${MODELS[currentModel].name} (ответ получен)`;
-                } else {
-                    aiResponse.innerHTML = result.message;
-                    modelInfo.textContent = `Модель: ${MODELS[currentModel].name} (ошибка)`;
-                }
-            });
-            
-            // Очистка
-            clearBtn.addEventListener('click', function() {
-                promptInput.value = '';
-                responseArea.style.display = 'none';
-            });
-            
-            // Ctrl+Enter
-            promptInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && e.ctrlKey) {
-                    sendBtn.click();
-                }
-            });
+    document.addEventListener('DOMContentLoaded', function() {
+        const modelCards = document.querySelectorAll('.model-card');
+        const promptInput = document.getElementById('promptInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const responseArea = document.getElementById('responseArea');
+        const aiResponse = document.getElementById('aiResponse');
+        const modelInfo = document.getElementById('modelInfo');
+        
+    if (!sendBtn || !promptInput) {
+        console.error('Элементы не найдены!');
+        return;
+    }
+    
+    // Выбор модели
+    modelCards.forEach(card => {
+        card.addEventListener('click', function() {
+            modelCards.forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            currentModel = this.dataset.model;
+            if (modelInfo) {
+                modelInfo.textContent = `Модель: ${MODELS[currentModel].name}`;
+            }
         });
+    });
+    
+    // Отправка промпта
+    sendBtn.addEventListener('click', async function() {
+        const prompt = promptInput.value.trim();
+        if (!prompt) {
+            alert('Напишите промпт!');
+            return;
+        }
+        if (!HF_TOKEN) {
+            alert('Токен не настроен!');
+            return;
+        }
+        
+        aiResponse.innerHTML = '⏳ Нейросеть думает...';
+        responseArea.style.display = 'block';
+        
+        const result = await askHuggingFace(prompt, currentModel);
+        
+        if (result.success) {
+            aiResponse.innerHTML = result.message.replace(/\n/g, '<br>');
+        } else {
+            aiResponse.innerHTML = result.message;
+        }
+    });
+    
+    // Очистка
+    clearBtn.addEventListener('click', function() {
+        promptInput.value = '';
+        responseArea.style.display = 'none';
+    });
+    
+    // Ctrl+Enter
+    promptInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && e.ctrlKey) {
+            sendBtn.click();
+        }
+    });
+    
+}); // ← ЭТА СКОБКА ОЧЕНЬ ВАЖНА!
     </script>
 </body>
 </html>
