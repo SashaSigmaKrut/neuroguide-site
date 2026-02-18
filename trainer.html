@@ -166,7 +166,7 @@ async function askDeepSeek(prompt, modelKey) {
     const model = MODELS[modelKey];
     
     // Проверяем ключ
-    if (!DEEPSEEK_API_KEY || DEEPSEEK_API_KEY === 'sk-acc1629a776b4d4bad842337c6a790c4') {
+    if (!DEEPSEEK_API_KEY || DEEPSEEK_API_KEY === 'ssk-ваш_ключ_сюда') {
         return {
             success: false,
             message: '❌ Вставьте ваш DeepSeek API ключ в файл trainer.html!\n\nПолучите его на platform.deepseek.com'
