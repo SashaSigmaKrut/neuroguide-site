@@ -67,20 +67,20 @@
     </div>
 
     <div class="model-selector">
-        <div class="model-card active" data-model="gemini-pro">
+        <div class="model-card active" data-model="gemini-2.0-flash">
+            <div class="model-icon"><i class="fas fa-bolt"></i></div>
+            <div class="model-name">Gemini 2.0 Flash</div>
+            <div class="model-desc">Быстрый и умный</div>
+        </div>
+        <div class="model-card" data-model="gemini-1.5-pro">
             <div class="model-icon"><i class="fas fa-brain"></i></div>
-            <div class="model-name">Gemini Pro</div>
-            <div class="model-desc">Стандартный</div>
+            <div class="model-name">Gemini 1.5 Pro</div>
+            <div class="model-desc">Мощный, для сложных задач</div>
         </div>
-        <div class="model-card" data-model="gemini-creative">
+        <div class="model-card" data-model="gemini-2.0-flash-lite">
             <div class="model-icon"><i class="fas fa-feather"></i></div>
-            <div class="model-name">Творческий</div>
-            <div class="model-desc">temperature: 1.0</div>
-        </div>
-        <div class="model-card" data-model="gemini-precise">
-            <div class="model-icon"><i class="fas fa-microscope"></i></div>
-            <div class="model-name">Точный</div>
-            <div class="model-desc">temperature: 0.3</div>
+            <div class="model-name">Gemini 2.0 Flash-Lite</div>
+            <div class="model-desc">Легкий и быстрый</div>
         </div>
     </div>
 
@@ -98,7 +98,7 @@
                 <div class="robot-avatar"><i class="fas fa-robot"></i></div>
                 <div>
                     <h3 style="color:white;">Ответ Google Gemini</h3>
-                    <p id="modelInfo" style="color:#8f8faf;">Модель: Gemini Pro</p>
+                    <p id="modelInfo" style="color:#8f8faf;">Модель: Gemini 2.0 Flash</p>
                 </div>
             </div>
             <div id="aiResponse" class="response-content"></div>
@@ -136,17 +136,17 @@
 </div>
 
 <script>
-// 🔐 ВАШ API КЛЮЧ GEMINI - ПОЛУЧИТЕ НА https://aistudio.google.com/app/apikey
-const GEMINI_API_KEY = 'AIzaSyBdkpKOzc5YYE7yvk00VBhnTU1tCwKfyDg'; // ЗАМЕНИТЕ НА СВОЙ!
+// 🔐 ВАШ API КЛЮЧ GEMINI (уже вставлен)
+const GEMINI_API_KEY = 'AIzaSyBdkpKOzc5YYE7yvk00VBhnTU1tCwKfyDg';
 
-// Модели с разными параметрами
+// АКТУАЛЬНЫЕ МОДЕЛИ GEMINI 2025
 const MODELS = {
-    'gemini-pro': { name: 'Gemini Pro', temp: 0.7 },
-    'gemini-creative': { name: 'Творческий', temp: 1.0 },
-    'gemini-precise': { name: 'Точный', temp: 0.3 }
+    'gemini-2.0-flash': { name: 'Gemini 2.0 Flash', temp: 0.7 },
+    'gemini-1.5-pro': { name: 'Gemini 1.5 Pro', temp: 0.3 },
+    'gemini-2.0-flash-lite': { name: 'Gemini 2.0 Flash-Lite', temp: 1.0 }
 };
 
-let currentModel = 'gemini-pro';
+let currentModel = 'gemini-2.0-flash';
 
 function useExample(text) {
     document.getElementById('promptInput').value = text;
@@ -158,18 +158,18 @@ async function askGemini(prompt, modelKey) {
     const model = MODELS[modelKey];
     
     // Проверяем ключ
-    if (!GEMINI_API_KEY || GEMINI_API_KEY === 'ВАШ_КЛЮЧ_GEMINI_СЮДА' || GEMINI_API_KEY.length < 10) {
+    if (!GEMINI_API_KEY || GEMINI_API_KEY.length < 10) {
         return {
             success: false,
-            message: '❌ Вставьте ваш Google Gemini API ключ в файл trainer.html!\n\nПолучите его на https://aistudio.google.com/app/apikey'
+            message: '❌ Неверный API ключ. Проверьте ключ в файле trainer.html'
         };
     }
     
     try {
-        console.log('Отправляем запрос к Google Gemini...');
+        console.log(`Отправляем запрос к модели ${modelKey}...`);
         
         const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
+            `https://generativelanguage.googleapis.com/v1beta/models/${modelKey}:generateContent?key=${GEMINI_API_KEY}`,
             {
                 method: 'POST',
                 headers: {
@@ -186,25 +186,7 @@ async function askGemini(prompt, modelKey) {
                         maxOutputTokens: 2000,
                         topP: 0.95,
                         topK: 40
-                    },
-                    safetySettings: [
-                        {
-                            category: "HARM_CATEGORY_HARASSMENT",
-                            threshold: "BLOCK_NONE"
-                        },
-                        {
-                            category: "HARM_CATEGORY_HATE_SPEECH",
-                            threshold: "BLOCK_NONE"
-                        },
-                        {
-                            category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                            threshold: "BLOCK_NONE"
-                        },
-                        {
-                            category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-                            threshold: "BLOCK_NONE"
-                        }
-                    ]
+                    }
                 })
             }
         );
@@ -214,13 +196,11 @@ async function askGemini(prompt, modelKey) {
         if (!response.ok) {
             const errorData = await response.json();
             console.error('Ошибка API:', errorData);
-            throw new Error(`Ошибка ${response.status}: ${errorData.error?.message || 'Неизвестная ошибка'}`);
+            throw new Error(errorData.error?.message || `Ошибка ${response.status}`);
         }
         
         const data = await response.json();
-        console.log('Ответ получен:', data);
         
-        // Извлекаем текст из ответа Gemini
         const answer = data.candidates[0]?.content?.parts[0]?.text || 'Нет ответа';
         
         return {
@@ -232,7 +212,7 @@ async function askGemini(prompt, modelKey) {
         console.error('Детали ошибки:', error);
         return {
             success: false,
-            message: `❌ Ошибка: ${error.message}\n\nПроверьте ключ API и интернет-соединение.`
+            message: `❌ Ошибка: ${error.message}`
         };
     }
 }
