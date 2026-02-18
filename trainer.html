@@ -542,11 +542,12 @@
 
         <!-- ФУТЕР -->
         <footer class="footer">
-            <div>© 2025 NeuroGuide • Тренажёр промптов</div>
+            <div>© 2026 NeuroGuide • Тренажёр промптов</div>
             <div class="social-links">
-                <a href="https://t.me/anonaskbot?start=aayfa"><i class="fab fa-telegram"></i></a>
-                <a href="https://vk.com/id643235376"><i class="fab fa-vk"></i></a>
-                <a href="https://github.com/SashaSigmaKrut"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-telegram"></i></a>
+                <a href="#"><i class="fab fa-vk"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
             </div>
         </footer>
     </div>
@@ -554,9 +555,7 @@
     <!-- JAVASCRIPT -->
     <script>
         // ⚠️ ВСТАВЬТЕ СВОЙ ТОКЕН ОТ HUGGING FACE
-        // Токен будет подставляться локально
-        const HF_TOKEN = localStorage.getItem('hf_token') || prompt('Введите ваш Hugging Face токен:');
-        localStorage.setItem('hf_token', HF_TOKEN);
+        const HF_TOKEN='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' ; // ЗАМЕНИТЕ НА СВОЙ!
         
         // Доступные модели
         const MODELS = {
@@ -680,24 +679,11 @@
                     return;
                 }
                 
-                // Получаем токен из localStorage или просим ввести
-                let HF_TOKEN = localStorage.getItem('hf_token');
-
-                if (!HF_TOKEN) {
-                    HF_TOKEN = prompt('🔑 Введите ваш Hugging Face токен:');
-                    if (HF_TOKEN && HF_TOKEN.startsWith('hf_')) {
-                        localStorage.setItem('hf_token', HF_TOKEN);
-                    } else {
-                        alert('❌ Нужен настоящий токен для работы!');
-                    }
-                }
-
-                // Теперь проверка
-                if (!HF_TOKEN || HF_TOKEN === 'hf_xxxxxxxxxxxxxxxxxxxx' || !HF_TOKEN.startsWith('hf_')) {
-                    alert('⚠️ Токен не введён или недействителен!');
+                if (!HF_TOKEN || HF_TOKEN === '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') {
+                    alert('⚠️ Сначала вставьте свой токен от Hugging Face в файл trainer.html!');
                     return;
                 }
-                                
+                
                 // Показываем загрузку
                 aiResponse.innerHTML = '<div class="loader"></div><p style="text-align: center;">Нейросеть думает...</p>';
                 modelInfo.textContent = `Модель: ${MODELS[currentModel].name} (отправка запроса)`;
