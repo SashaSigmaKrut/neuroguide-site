@@ -43,11 +43,6 @@
             to { transform: rotate(360deg); }
         }
         
-        .trainer-hero h1 {
-            position: relative;
-            z-index: 1;
-        }
-        
         .model-selector {
             display: flex;
             justify-content: center;
@@ -542,7 +537,7 @@
 
         <!-- ФУТЕР -->
         <footer class="footer">
-            <div>© 2026 NeuroGuide • Тренажёр промптов</div>
+            <div>© 2025 NeuroGuide • Тренажёр промптов</div>
             <div class="social-links">
                 <a href="#"><i class="fab fa-telegram"></i></a>
                 <a href="#"><i class="fab fa-vk"></i></a>
@@ -552,10 +547,10 @@
         </footer>
     </div>
 
-    <!-- JAVASCRIPT -->
+    <!-- JAVASCRIPT С ВАШИМ ТОКЕНОМ -->
     <script>
-        // ⚠️ ВСТАВЬТЕ СВОЙ ТОКЕН ОТ HUGGING FACE
-        const HF_TOKEN='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' ; // ЗАМЕНИТЕ НА СВОЙ!
+        // 🔐 ВАШ ЛИЧНЫЙ ТОКЕН (НЕ РАССКАЗЫВАЙТЕ НИКОМУ!)
+        const HF_TOKEN = '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';
         
         // Доступные модели
         const MODELS = {
@@ -679,8 +674,9 @@
                     return;
                 }
                 
-                if (!HF_TOKEN || HF_TOKEN === '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') {
-                    alert('⚠️ Сначала вставьте свой токен от Hugging Face в файл trainer.html!');
+                // Проверка токена
+                if (!HF_TOKEN || HF_TOKEN === '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') {
+                    alert('⚠️ Токен не настроен! Свяжитесь с администратором.');
                     return;
                 }
                 
