@@ -161,12 +161,14 @@ body {
     padding: 20px;
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.03);
-    transition: 0.3s;
+    transition: all 0.3s ease;
 }
 
 .ai-card-small:hover {
     border-color: rgba(166, 136, 255, 0.3);
-    transform: translateY(-5px);
+    transform: scale(1.02);  /* чуть увеличивается */
+    box-shadow: 0 10px 30px rgba(166, 136, 255, 0.3);
+    cursor: pointer;
 }
 
 .ai-card-small i {
