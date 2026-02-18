@@ -187,5 +187,14 @@
             </div>
         </footer>
     </div>
+    <script>
+        // Находим все элементы с атрибутом data-link
+        document.querySelectorAll('[data-link]').forEach(element => {
+            element.addEventListener('click', function() {
+                const url = this.getAttribute('data-link');
+                window.open(url, '_blank'); // открываем в новой вкладке
+            });
+        });
+    </script>
 </body>
 </html>
