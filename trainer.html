@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тренажёр промптов | NeuroGuide</title>
+    <!-- Подключение шрифтов и иконок -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Подключение того же CSS -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Специальные стили для тренажёра */
+        body {
+            background: linear-gradient(135deg, #0a0a1a 0%, #15152a 100%);
+        }
+        
+        .trainer-hero {
+            text-align: center;
+            padding: 80px 0 40px;
+            background: linear-gradient(135deg, rgba(166, 136, 255, 0.15), rgba(108, 208, 255, 0.15));
+            border-radius: 50px;
+            margin: 30px 0 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .trainer-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(166,136,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .trainer-hero h1 {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .model-selector {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        
+        .model-card {
+            background: rgba(30, 30, 50, 0.7);
+            border: 2px solid transparent;
+            border-radius: 30px;
+            padding: 20px 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 150px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .model-card:hover {
+            transform: translateY(-5px);
+            border-color: #a688ff;
+            box-shadow: 0 10px 30px rgba(166, 136, 255, 0.3);
+        }
+        
+        .model-card.active {
+            border-color: #a688ff;
+            background: rgba(166, 136, 255, 0.15);
+            box-shadow: 0 0 30px rgba(166, 136, 255, 0.3);
+        }
+        
+        .model-icon {
+            font-size: 2.5rem;
+            color: #a688ff;
+            margin-bottom: 10px;
+        }
+        
+        .model-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 5px;
+        }
+        
+        .model-desc {
+            font-size: 0.85rem;
+            color: #8f8faf;
+        }
+        
+        .input-container {
+            background: rgba(30, 30, 50, 0.5);
+            border-radius: 40px;
+            padding: 40px;
+            border: 1px solid rgba(166, 136, 255, 0.2);
+            backdrop-filter: blur(10px);
+            margin: 40px 0;
+        }
+        
+        .prompt-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: #a688ff;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .prompt-input {
+            width: 100%;
+            padding: 25px;
+            background: rgba(20, 20, 35, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            border-radius: 25px;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+        
+        .prompt-input:focus {
+            outline: none;
+            border-color: #a688ff;
+            box-shadow: 0 0 30px rgba(166, 136, 255, 0.3);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .primary-btn {
+            background: linear-gradient(135deg, #a688ff, #8a6aff);
+            border: none;
+            color: white;
+            padding: 18px 50px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(166, 136, 255, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(166, 136, 255, 0.6);
+        }
+        
+        .secondary-btn {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: #b0b0d0;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .secondary-btn:hover {
+            border-color: #a688ff;
+            color: #a688ff;
+            transform: translateY(-3px);
+        }
+        
+        .response-area {
+            margin-top: 50px;
+            display: none;
+        }
+        
+        .response-card {
+            background: linear-gradient(135deg, #1a1a30, #14142a);
+            border-radius: 40px;
+            padding: 40px;
+            border: 1px solid rgba(166, 136, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .response-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .robot-avatar {
+            width: 70px;
+            height: 70px;
+            background: #a688ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 0 30px rgba(166, 136, 255, 0.5);
+        }
+        
+        .response-title h3 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .response-title p {
+            color: #8f8faf;
+            font-size: 0.9rem;
+        }
+        
+        .response-content {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 25px;
+            padding: 30px;
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            border-left: 5px solid #a688ff;
+            white-space: pre-wrap;
+        }
+        
+        .loader {
+            border: 4px solid rgba(166, 136, 255, 0.3);
+            border-top: 4px solid #a688ff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 60px 0;
+        }
+        
+        .example-card {
+            background: rgba(30, 30, 50, 0.5);
+            border-radius: 25px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        
+        .example-card:hover {
+            transform: translateY(-5px);
+            border-color: #a688ff;
+            box-shadow: 0 10px 30px rgba(166, 136, 255, 0.2);
+        }
+        
+        .example-card h4 {
+            color: #a688ff;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .example-card p {
+            color: #b0b0d0;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .example-tag {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(166, 136, 255, 0.1);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: #a688ff;
+            border: 1px solid rgba(166, 136, 255, 0.2);
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-badge {
+            background: rgba(166, 136, 255, 0.1);
+            border-radius: 30px;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(166, 136, 255, 0.2);
+        }
+        
+        .stat-badge i {
+            font-size: 1.5rem;
+            color: #a688ff;
+        }
+        
+        .stat-badge span {
+            color: white;
+            font-weight: 600;
+        }
+        
+        .stat-badge small {
+            color: #8f8faf;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #a688ff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            transform: translateX(-5px);
+            color: #b89eff;
+        }
+        
+        @media (max-width: 768px) {
+            .model-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .model-card {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .input-container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ШАПКА -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>NeuroGuide</h1>
+                    <p>освоим AI вместе</p>
+                </div>
+            </div>
+            <nav class="nav">
+                <a href="index.html">Главная</a>
+                <a href="prompts.html">Промпты</a>
+                <a href="trainer.html" class="active">Тренажёр</a>
+                <a href="#">Блог</a>
+            </nav>
+            <div class="btn-glow">
+                <i class="fas fa-robot"></i> Начать
+            </div>
+        </header>
+
+        <!-- ССЫЛКА НАЗАД -->
+        <a href="prompts.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Вернуться к уроку по промптам
+        </a>
+
+        <!-- ГЕРОЙ СЕКЦИЯ -->
+        <div class="trainer-hero">
+            <h1 class="section-title">🧪 Тренажёр <span>промптов</span></h1>
+            <p style="font-size: 1.3rem; max-width: 700px; margin: 20px auto 0; color: #b0b0d0;">
+                Пишите промпты и получайте реальные ответы от нейросетей
+            </p>
+        </div>
+
+        <!-- СТАТИСТИКА -->
+        <div class="stats-container">
+            <div class="stat-badge">
+                <i class="fas fa-robot"></i>
+                <div>
+                    <span>3 модели</span><br>
+                    <small>на выбор</small>
+                </div>
+            </div>
+            <div class="stat-badge">
+                <i class="fas fa-bolt"></i>
+                <div>
+                    <span>Бесплатно</span><br>
+                    <small>через Hugging Face</small>
+                </div>
+            </div>
+            <div class="stat-badge">
+                <i class="fas fa-infinity"></i>
+                <div>
+                    <span>Без ограничений</span><br>
+                    <small>почти</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- ВЫБОР МОДЕЛИ -->
+        <h2 style="text-align: center; color: white; margin-bottom: 20px;">Выберите нейросеть</h2>
+        <div class="model-selector" id="modelSelector">
+            <div class="model-card active" data-model="mistral">
+                <div class="model-icon"><i class="fas fa-bolt"></i></div>
+                <div class="model-name">Mistral 7B</div>
+                <div class="model-desc">Быстрая и точная</div>
+            </div>
+            <div class="model-card" data-model="llama">
+                <div class="model-icon"><i class="fas fa-brain"></i></div>
+                <div class="model-name">Llama 2</div>
+                <div class="model-desc">Мощная от Meta</div>
+            </div>
+            <div class="model-card" data-model="zephyr">
+                <div class="model-icon"><i class="fas fa-wind"></i></div>
+                <div class="model-name">Zephyr</div>
+                <div class="model-desc">Оптимизированная</div>
+            </div>
+        </div>
+
+        <!-- ОСНОВНОЙ ИНТЕРФЕЙС -->
+        <div class="input-container">
+            <div class="prompt-label">
+                <i class="fas fa-pen-fancy"></i>
+                <span>Ваш промпт:</span>
+            </div>
+            
+            <textarea id="promptInput" class="prompt-input" rows="5" placeholder="Например: Объясни, как работают нейросети, простыми словами. Используй аналогии с человеческим мозгом."></textarea>
+            
+            <div class="button-group">
+                <button id="sendBtn" class="primary-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Отправить
+                </button>
+                <button id="clearBtn" class="secondary-btn">
+                    <i class="fas fa-undo"></i>
+                    Очистить
+                </button>
+            </div>
+        </div>
+
+        <!-- ОБЛАСТЬ ОТВЕТА -->
+        <div id="responseArea" class="response-area">
+            <div class="response-card">
+                <div class="response-header">
+                    <div class="robot-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="response-title">
+                        <h3>Ответ нейросети</h3>
+                        <p id="modelInfo">Модель: Mistral 7B</p>
+                    </div>
+                </div>
+                <div id="aiResponse" class="response-content">
+                    <!-- Здесь появится ответ -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ПРИМЕРЫ ПРОМПТОВ -->
+        <h2 style="text-align: center; color: white; margin: 80px 0 40px;">📚 Примеры <span style="color: #a688ff;">промптов</span></h2>
+        
+        <div class="examples-grid">
+            <div class="example-card" onclick="useExample('Ты профессиональный копирайтер. Напиши продающий пост для Instagram о новом приложении для изучения английского. Используй эмодзи, хештеги и призыв к действию.')">
+                <h4><i class="fas fa-megaphone"></i> Рекламный пост</h4>
+                <p>"Ты профессиональный копирайтер. Напиши продающий пост для Instagram о новом приложении для изучения английского. Используй эмодзи, хештеги и призыв к действию."</p>
+                <span class="example-tag">#копирайтинг</span>
+            </div>
+            
+            <div class="example-card" onclick="useExample('Объясни теорию относительности Эйнштейна так, как будто я 10-летний ребенок. Используй простые аналогии и примеры из жизни.')">
+                <h4><i class="fas fa-atom"></i> Для ребёнка</h4>
+                <p>"Объясни теорию относительности Эйнштейна так, как будто я 10-летний ребенок. Используй простые аналогии и примеры из жизни."</p>
+                <span class="example-tag">#обучение</span>
+            </div>
+            
+            <div class="example-card" onclick="useExample('Напиши функцию на JavaScript, которая сортирует массив чисел по возрастанию. Добавь комментарии и проверку, что массив не пустой.')">
+                <h4><i class="fas fa-code"></i> Код на JavaScript</h4>
+                <p>"Напиши функцию на JavaScript, которая сортирует массив чисел по возрастанию. Добавь комментарии и проверку, что массив не пустой."</p>
+                <span class="example-tag">#программирование</span>
+            </div>
+            
+            <div class="example-card" onclick="useExample('Придумай 5 креативных идей для свидания в дождливую погоду. Идеи должны быть романтичными, необычными и подходить для небольшого бюджета.')">
+                <h4><i class="fas fa-heart"></i> Идеи для свидания</h4>
+                <p>"Придумай 5 креативных идей для свидания в дождливую погоду. Идеи должны быть романтичными, необычными и подходить для небольшого бюджета."</p>
+                <span class="example-tag">#идеи</span>
+            </div>
+            
+            <div class="example-card" onclick="useExample('Составь план тренировок на неделю для новичка. Цель: похудеть и подтянуть тело. Укажи упражнения, количество подходов и дни отдыха.')">
+                <h4><i class="fas fa-dumbbell"></i> План тренировок</h4>
+                <p>"Составь план тренировок на неделю для новичка. Цель: похудеть и подтянуть тело. Укажи упражнения, количество подходов и дни отдыха."</p>
+                <span class="example-tag">#фитнес</span>
+            </div>
+            
+            <div class="example-card" onclick="useExample('Напиши рецепт вкусного и полезного завтрака, который готовится за 10 минут. Укажи ингредиенты и пошаговую инструкцию.')">
+                <h4><i class="fas fa-utensils"></i> Рецепт</h4>
+                <p>"Напиши рецепт вкусного и полезного завтрака, который готовится за 10 минут. Укажи ингредиенты и пошаговую инструкцию."</p>
+                <span class="example-tag">#кулинария</span>
+            </div>
+        </div>
+
+        <!-- ПОДСКАЗКА -->
+        <div style="background: rgba(166, 136, 255, 0.1); border-radius: 30px; padding: 30px; margin: 60px 0; border: 1px dashed #a688ff;">
+            <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+                <div style="font-size: 3rem;">💡</div>
+                <div>
+                    <h3 style="color: #a688ff; margin-bottom: 10px;">Как получить лучший ответ?</h3>
+                    <p style="color: #b0b0d0;">Укажите роль, контекст, задачу, формат и ограничения. Чем конкретнее промпт, тем лучше ответ!</p>
+                    <p style="color: #8f8faf; margin-top: 10px;">✨ Совет: Используйте Ctrl+Enter для быстрой отправки</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ФУТЕР -->
+        <footer class="footer">
+            <div>© 2025 NeuroGuide • Тренажёр промптов</div>
+            <div class="social-links">
+                <a href="https://t.me/anonaskbot?start=aayfa"><i class="fab fa-telegram"></i></a>
+                <a href="https://vk.com/id643235376"><i class="fab fa-vk"></i></a>
+                <a href="https://github.com/SashaSigmaKrut"><i class="fab fa-github"></i></a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // ⚠️ ВСТАВЬТЕ СВОЙ ТОКЕН ОТ HUGGING FACE
+        const HF_TOKEN = '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'; // ЗАМЕНИТЕ НА СВОЙ!
+        
+        // Доступные модели
+        const MODELS = {
+            mistral: {
+                name: 'Mistral 7B',
+                api: 'mistralai/Mistral-7B-Instruct-v0.1',
+                icon: '⚡'
+            },
+            llama: {
+                name: 'Llama 2',
+                api: 'meta-llama/Llama-2-7b-chat-hf',
+                icon: '🦙'
+            },
+            zephyr: {
+                name: 'Zephyr',
+                api: 'HuggingFaceH4/zephyr-7b-beta',
+                icon: '🌬️'
+            }
+        };
+        
+        let currentModel = 'mistral';
+        
+        // Функция для использования примеров
+        function useExample(text) {
+            document.getElementById('promptInput').value = text;
+            document.getElementById('promptInput').focus();
+        }
+        
+        // Запрос к Hugging Face
+        async function askHuggingFace(prompt, modelKey) {
+            const model = MODELS[modelKey];
+            
+            try {
+                const response = await fetch(
+                    `https://api-inference.huggingface.co/models/${model.api}`,
+                    {
+                        headers: { 
+                            'Authorization': `Bearer ${HF_TOKEN}`,
+                            'Content-Type': 'application/json'
+                        },
+                        method: "POST",
+                        body: JSON.stringify({ 
+                            inputs: prompt,
+                            parameters: {
+                                max_new_tokens: 800,
+                                temperature: 0.7,
+                                top_p: 0.95,
+                                do_sample: true,
+                                return_full_text: false
+                            }
+                        }),
+                    }
+                );
+                
+                if (!response.ok) {
+                    if (response.status === 503) {
+                        return {
+                            success: false,
+                            message: "⏳ Модель загружается... Это может занять 20-30 секунд. Попробуйте снова!"
+                        };
+                    }
+                    throw new Error(`Ошибка ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                // Обработка разных форматов ответа
+                let answer = '';
+                if (Array.isArray(result) && result.length > 0) {
+                    if (result[0].generated_text) {
+                        answer = result[0].generated_text;
+                    } else {
+                        answer = result[0];
+                    }
+                } else if (result.generated_text) {
+                    answer = result.generated_text;
+                } else {
+                    answer = JSON.stringify(result);
+                }
+                
+                return {
+                    success: true,
+                    message: answer
+                };
+                
+            } catch (error) {
+                console.error('Ошибка:', error);
+                return {
+                    success: false,
+                    message: `❌ Ошибка: ${error.message}. Попробуйте другую модель или повторите позже.`
+                };
+            }
+        }
+        
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            const modelCards = document.querySelectorAll('.model-card');
+            const promptInput = document.getElementById('promptInput');
+            const sendBtn = document.getElementById('sendBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const responseArea = document.getElementById('responseArea');
+            const aiResponse = document.getElementById('aiResponse');
+            const modelInfo = document.getElementById('modelInfo');
+            
+            // Выбор модели
+            modelCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    modelCards.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    currentModel = this.getAttribute('data-model');
+                    modelInfo.textContent = `Модель: ${MODELS[currentModel].name}`;
+                });
+            });
+            
+            // Отправка промпта
+            sendBtn.addEventListener('click', async function() {
+                const prompt = promptInput.value.trim();
+                
+                if (!prompt) {
+                    alert('Напишите промпт!');
+                    return;
+                }
+                
+                if (!HF_TOKEN || HF_TOKEN === 'hhf_ITBjVMMEzKQQTsnYFbigubTGAUQuKiuzgt') {
+                    alert('⚠️ Сначала вставьте свой токен от Hugging Face в файл trainer.html!');
+                    return;
+                }
+                
+                // Показываем загрузку
+                aiResponse.innerHTML = '<div class="loader"></div><p style="text-align: center;">Нейросеть думает...</p>';
+                modelInfo.textContent = `Модель: ${MODELS[currentModel].name} (отправка запроса)`;
+                responseArea.style.display = 'block';
+                
+                // Получаем ответ
+                const result = await askHuggingFace(prompt, currentModel);
+                
+                if (result.success) {
+                    aiResponse.innerHTML = result.message.replace(/\n/g, '<br>');
+                    modelInfo.textContent = `Модель: ${MODELS[currentModel].name} (ответ получен)`;
+                } else {
+                    aiResponse.innerHTML = result.message;
+                    modelInfo.textContent = `Модель: ${MODELS[currentModel].name} (ошибка)`;
+                }
+            });
+            
+            // Очистка
+            clearBtn.addEventListener('click', function() {
+                promptInput.value = '';
+                responseArea.style.display = 'none';
+            });
+            
+            // Ctrl+Enter
+            promptInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && e.ctrlKey) {
+                    sendBtn.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
