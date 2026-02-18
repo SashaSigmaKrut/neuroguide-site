@@ -673,6 +673,19 @@
                     alert('Напишите промпт!');
                     return;
                 }
+                sendBtn.addEventListener('click', async function() {
+                console.log('🔵 КНОПКА НАЖАТА!'); // ЭТО ДОЛЖНО ПОЯВИТЬСЯ В КОНСОЛИ
+                
+                const prompt = promptInput.value.trim();
+                console.log('🔵 ПРОМПТ:', prompt);
+                
+                if (!prompt) {
+                    alert('Напишите промпт!');
+                    return;
+                }
+                
+                console.log('🔵 ТОКЕН:', HF_TOKEN ? 'Есть' : 'Нет');
+                console.log('🔵 ДЛИНА ТОКЕНА:', HF_TOKEN ? HF_TOKEN.length : 0);
                 
                 // Проверка токена
                 if (!HF_TOKEN || HF_TOKEN === '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') {
