@@ -39,7 +39,7 @@
         .example-card:hover { transform: translateY(-5px); border-color: #a688ff; }
         .example-card h4 { color: #a688ff; margin-bottom: 10px; }
         .back-link { display: inline-flex; align-items: center; gap: 10px; color: #a688ff; text-decoration: none; margin: 30px 0; }
-        .gemini-badge { background: rgba(66,133,244,0.2); border-radius: 50px; padding: 8px 20px; display: inline-block; color: #4285F4; font-weight: 600; margin-top: 10px; }
+        .groq-badge { background: rgba(0,200,150,0.2); border-radius: 50px; padding: 8px 20px; display: inline-block; color: #00c896; font-weight: 600; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -62,25 +62,25 @@
 
     <div class="trainer-hero">
         <h1 class="section-title">🧪 Тренажёр <span>промптов</span></h1>
-        <p style="color: #b0b0d0; max-width: 700px; margin: 20px auto;">Пишите промпты и получайте ответы от Google Gemini!</p>
-        <div class="gemini-badge"><i class="fab fa-google"></i> Работает на Google Gemini API</div>
+        <p style="color: #b0b0d0; max-width: 700px; margin: 20px auto;">Пишите промпты и получайте ответы от Groq (Llama 3)!</p>
+        <div class="groq-badge"><i class="fas fa-bolt"></i> Работает на Groq LPU</div>
     </div>
 
     <div class="model-selector">
-        <div class="model-card active" data-model="gemini-2.0-flash">
-            <div class="model-icon"><i class="fas fa-bolt"></i></div>
-            <div class="model-name">Gemini 2.0 Flash</div>
-            <div class="model-desc">Быстрый и умный</div>
-        </div>
-        <div class="model-card" data-model="gemini-1.5-pro">
+        <div class="model-card active" data-model="llama3-70b">
             <div class="model-icon"><i class="fas fa-brain"></i></div>
-            <div class="model-name">Gemini 1.5 Pro</div>
-            <div class="model-desc">Мощный, для сложных задач</div>
+            <div class="model-name">Llama 3 70B</div>
+            <div class="model-desc">Самый мощный</div>
         </div>
-        <div class="model-card" data-model="gemini-2.0-flash-lite">
+        <div class="model-card" data-model="llama3-8b">
+            <div class="model-icon"><i class="fas fa-bolt"></i></div>
+            <div class="model-name">Llama 3 8B</div>
+            <div class="model-desc">Быстрый и легкий</div>
+        </div>
+        <div class="model-card" data-model="mixtral-8x7b">
             <div class="model-icon"><i class="fas fa-feather"></i></div>
-            <div class="model-name">Gemini 2.0 Flash-Lite</div>
-            <div class="model-desc">Легкий и быстрый</div>
+            <div class="model-name">Mixtral</div>
+            <div class="model-desc">Экспертная модель</div>
         </div>
     </div>
 
@@ -97,8 +97,8 @@
             <div class="response-header">
                 <div class="robot-avatar"><i class="fas fa-robot"></i></div>
                 <div>
-                    <h3 style="color:white;">Ответ Google Gemini</h3>
-                    <p id="modelInfo" style="color:#8f8faf;">Модель: Gemini 2.0 Flash</p>
+                    <h3 style="color:white;">Ответ Groq</h3>
+                    <p id="modelInfo" style="color:#8f8faf;">Модель: Llama 3 70B</p>
                 </div>
             </div>
             <div id="aiResponse" class="response-content"></div>
@@ -126,7 +126,7 @@
     </div>
 
     <footer class="footer">
-        <div>© 2025 NeuroGuide • Тренажёр на Google Gemini</div>
+        <div>© 2025 NeuroGuide • Тренажёр на Groq</div>
         <div class="social-links">
             <a href="#"><i class="fab fa-telegram"></i></a>
             <a href="#"><i class="fab fa-vk"></i></a>
@@ -136,60 +136,72 @@
 </div>
 
 <script>
-// 🔐 ВАШ API КЛЮЧ GEMINI (уже вставлен)
-const GEMINI_API_KEY = 'AIzaSyBdkpKOzc5YYE7yvk00VBhnTU1tCwKfyDg';
+// 🔐 ВАШ API КЛЮЧ GROQ - ПОЛУЧИТЕ НА https://console.groq.com
+const GROQ_API_KEY = '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'; // ЗАМЕНИТЕ НА СВОЙ!
 
-// АКТУАЛЬНЫЕ МОДЕЛИ GEMINI 2025
+// МОДЕЛИ GROQ
 const MODELS = {
-    'gemini-2.0-flash': { name: 'Gemini 2.0 Flash', temp: 0.7 },
-    'gemini-1.5-pro': { name: 'Gemini 1.5 Pro', temp: 0.3 },
-    'gemini-2.0-flash-lite': { name: 'Gemini 2.0 Flash-Lite', temp: 1.0 }
+    'llama3-70b': { 
+        name: 'Llama 3 70B', 
+        model: 'llama3-70b-8192',
+        temp: 0.7 
+    },
+    'llama3-8b': { 
+        name: 'Llama 3 8B', 
+        model: 'llama3-8b-8192',
+        temp: 0.8 
+    },
+    'mixtral-8x7b': { 
+        name: 'Mixtral', 
+        model: 'mixtral-8x7b-32768',
+        temp: 0.6 
+    }
 };
 
-let currentModel = 'gemini-2.0-flash';
+let currentModel = 'llama3-70b';
 
 function useExample(text) {
     document.getElementById('promptInput').value = text;
     document.getElementById('promptInput').focus();
 }
 
-// ЗАПРОС К GOOGLE GEMINI API
-async function askGemini(prompt, modelKey) {
+// ЗАПРОС К GROQ API
+async function askGroq(prompt, modelKey) {
     const model = MODELS[modelKey];
     
     // Проверяем ключ
-    if (!GEMINI_API_KEY || GEMINI_API_KEY.length < 10) {
+    if (!GROQ_API_KEY || GROQ_API_KEY === 'ВАШ_КЛЮЧ_GROQ_СЮДА' || GROQ_API_KEY.length < 10) {
         return {
             success: false,
-            message: '❌ Неверный API ключ. Проверьте ключ в файле trainer.html'
+            message: '❌ Вставьте ваш Groq API ключ в файл trainer.html!\n\nПолучите его на https://console.groq.com'
         };
     }
     
     try {
-        console.log(`Отправляем запрос к модели ${modelKey}...`);
+        console.log(`Отправляем запрос к модели ${model.name}...`);
         
-        const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/${modelKey}:generateContent?key=${GEMINI_API_KEY}`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{
-                            text: prompt
-                        }]
-                    }],
-                    generationConfig: {
-                        temperature: model.temp,
-                        maxOutputTokens: 2000,
-                        topP: 0.95,
-                        topK: 40
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${GROQ_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: model.model,
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'Ты — полезный ассистент, эксперт по написанию промптов. Отвечай подробно, понятно и с примерами. Используй русский язык.'
+                    },
+                    {
+                        role: 'user',
+                        content: prompt
                     }
-                })
-            }
-        );
+                ],
+                temperature: model.temp,
+                max_tokens: 2000
+            })
+        });
         
         console.log('Статус ответа:', response.status);
         
@@ -200,8 +212,9 @@ async function askGemini(prompt, modelKey) {
         }
         
         const data = await response.json();
+        console.log('Ответ получен');
         
-        const answer = data.candidates[0]?.content?.parts[0]?.text || 'Нет ответа';
+        const answer = data.choices[0]?.message?.content || 'Нет ответа';
         
         return {
             success: true,
@@ -247,13 +260,13 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        aiResponse.innerHTML = '<div class="loader"></div><p style="text-align:center;">Google Gemini думает...</p>';
+        aiResponse.innerHTML = '<div class="loader"></div><p style="text-align:center;">Groq думает...</p>';
         responseArea.style.display = 'block';
         if (modelInfo) {
             modelInfo.textContent = `Модель: ${MODELS[currentModel].name} (отправка...)`;
         }
 
-        const result = await askGemini(prompt, currentModel);
+        const result = await askGroq(prompt, currentModel);
         
         if (result.success) {
             aiResponse.innerHTML = result.message.replace(/\n/g, '<br>');
