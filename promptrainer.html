@@ -62,24 +62,29 @@
 
     <div class="trainer-hero">
         <h1 class="section-title">🧪 Тренажёр <span>промптов</span></h1>
-        <p style="color: #b0b0d0; max-width: 700px; margin: 20px auto;">Пишите промпты и получайте ответы от Groq (Llama 3)!</p>
+        <p style="color: #b0b0d0; max-width: 700px; margin: 20px auto;">Пишите промпты и получайте ответы от Groq (модели 2026)!</p>
         <div class="groq-badge"><i class="fas fa-bolt"></i> Работает на Groq LPU</div>
     </div>
 
     <div class="model-selector">
-        <div class="model-card active" data-model="llama3-70b">
-            <div class="model-icon"><i class="fas fa-brain"></i></div>
-            <div class="model-name">Llama 3 70B</div>
-            <div class="model-desc">Самый мощный</div>
+        <div class="model-card active" data-model="llama-4-70b">
+            <div class="model-icon"><i class="fas fa-crown"></i></div>
+            <div class="model-name">Llama 4 70B</div>
+            <div class="model-desc">Флагман 2026</div>
         </div>
-        <div class="model-card" data-model="llama3-8b">
+        <div class="model-card" data-model="llama-4-8b">
             <div class="model-icon"><i class="fas fa-bolt"></i></div>
-            <div class="model-name">Llama 3 8B</div>
+            <div class="model-name">Llama 4 8B</div>
             <div class="model-desc">Быстрый и легкий</div>
         </div>
-        <div class="model-card" data-model="mixtral-8x7b">
+        <div class="model-card" data-model="gemma-3-27b">
+            <div class="model-icon"><i class="fab fa-google"></i></div>
+            <div class="model-name">Gemma 3 27B</div>
+            <div class="model-desc">Google DeepMind</div>
+        </div>
+        <div class="model-card" data-model="mixtral-8x22b">
             <div class="model-icon"><i class="fas fa-feather"></i></div>
-            <div class="model-name">Mixtral</div>
+            <div class="model-name">Mixtral 8x22B</div>
             <div class="model-desc">Экспертная модель</div>
         </div>
     </div>
@@ -98,7 +103,7 @@
                 <div class="robot-avatar"><i class="fas fa-robot"></i></div>
                 <div>
                     <h3 style="color:white;">Ответ Groq</h3>
-                    <p id="modelInfo" style="color:#8f8faf;">Модель: Llama 3 70B</p>
+                    <p id="modelInfo" style="color:#8f8faf;">Модель: Llama 4 70B</p>
                 </div>
             </div>
             <div id="aiResponse" class="response-content"></div>
@@ -136,29 +141,38 @@
 </div>
 
 <script>
-// 🔐 ВАШ API КЛЮЧ GROQ - ПОЛУЧИТЕ НА https://console.groq.com
-const GROQ_API_KEY = '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'; // ЗАМЕНИТЕ НА СВОЙ!
+// 🔐 ВАШ API КЛЮЧ GROQ
+const GROQ_API_KEY = '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';
 
-// МОДЕЛИ GROQ
+// МОДЕЛИ GROQ 2026 ГОДА (самые актуальные)
 const MODELS = {
-    'llama3-70b': { 
-        name: 'Llama 3 70B', 
-        model: 'llama3-70b-8192',
-        temp: 0.7 
+    'llama-4-70b': { 
+        name: 'Llama 4 70B', 
+        model: 'llama-4-70b-8192',
+        temp: 0.7,
+        desc: 'Флагманская модель 2026'
     },
-    'llama3-8b': { 
-        name: 'Llama 3 8B', 
-        model: 'llama3-8b-8192',
-        temp: 0.8 
+    'llama-4-8b': { 
+        name: 'Llama 4 8B', 
+        model: 'llama-4-8b-8192',
+        temp: 0.8,
+        desc: 'Быстрая и легкая'
     },
-    'mixtral-8x7b': { 
-        name: 'Mixtral', 
-        model: 'mixtral-8x7b-32768',
-        temp: 0.6 
+    'gemma-3-27b': { 
+        name: 'Gemma 3 27B', 
+        model: 'gemma-3-27b-it',
+        temp: 0.6,
+        desc: 'От Google DeepMind'
+    },
+    'mixtral-8x22b': { 
+        name: 'Mixtral 8x22B', 
+        model: 'mixtral-8x22b-v0.1',
+        temp: 0.7,
+        desc: 'Экспертная модель'
     }
 };
 
-let currentModel = 'llama3-70b';
+let currentModel = 'llama-4-70b';
 
 function useExample(text) {
     document.getElementById('promptInput').value = text;
@@ -170,10 +184,10 @@ async function askGroq(prompt, modelKey) {
     const model = MODELS[modelKey];
     
     // Проверяем ключ
-    if (!GROQ_API_KEY || GROQ_API_KEY === 'ВАШ_КЛЮЧ_GROQ_СЮДА' || GROQ_API_KEY.length < 10) {
+    if (!GROQ_API_KEY || GROQ_API_KEY.length < 10) {
         return {
             success: false,
-            message: '❌ Вставьте ваш Groq API ключ в файл trainer.html!\n\nПолучите его на https://console.groq.com'
+            message: '❌ Неверный API ключ. Проверьте ключ в файле trainer.html'
         };
     }
     
@@ -191,7 +205,7 @@ async function askGroq(prompt, modelKey) {
                 messages: [
                     {
                         role: 'system',
-                        content: 'Ты — полезный ассистент, эксперт по написанию промптов. Отвечай подробно, понятно и с примерами. Используй русский язык.'
+                        content: 'Ты — полезный ассистент 2026 года, эксперт по написанию промптов. Отвечай подробно, понятно и с примерами. Используй русский язык.'
                     },
                     {
                         role: 'user',
@@ -199,7 +213,8 @@ async function askGroq(prompt, modelKey) {
                     }
                 ],
                 temperature: model.temp,
-                max_tokens: 2000
+                max_tokens: 4000,
+                top_p: 0.95
             })
         });
         
