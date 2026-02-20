@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тренажёр промптов | NeuroGuide</title>
+    <title>Тренажёр промптов | amukaB</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -108,11 +108,6 @@
             <div class="model-name">Llama 3.1 8B</div>
             <div class="model-desc">Быстрая</div>
         </div>
-        <div class="model-card" data-model="mixtral-8x7b-instruct">
-            <div class="model-icon"><i class="fas fa-feather"></i></div>
-            <div class="model-name">Mixtral 8x7B</div>
-            <div class="model-desc">Экспертная</div>
-        </div>
     </div>
 
     <div class="input-container">
@@ -171,7 +166,7 @@
     </div>
 
     <footer class="footer">
-        <div>© 2026 NeuroGuide • Тренажёр на Groq</div>
+        <div>© 2026 amukaB • Тренажёр на Groq</div>
         <div class="social-links">
             <a href="#"><i class="fab fa-telegram"></i></a>
             <a href="#"><i class="fab fa-vk"></i></a>
@@ -196,11 +191,6 @@ const MODELS = {
         model: 'llama-3.1-8b-instant',
         temp: 0.8
     },
-    'mixtral-8x7b-instruct': { 
-        name: 'Mixtral 8x7B', 
-        model: 'mixtral-8x7b-instruct-v0.1',
-        temp: 0.6
-    }
 };
 
 let currentModel = 'llama-3.3-70b-versatile';
