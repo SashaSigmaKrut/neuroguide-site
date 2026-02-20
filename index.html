@@ -11,6 +11,109 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Подключение внешнего CSS -->
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ DROPDOWN */
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            background: rgba(166, 136, 255, 0.15);
+            border: 1px solid rgba(166, 136, 255, 0.3);
+            color: #a688ff;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 20px rgba(166, 136, 255, 0.2);
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 120%;
+            right: 0;
+            min-width: 300px;
+            background: rgba(20, 20, 35, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(166, 136, 255, 0.2);
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .dropdown-container:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: #e0e0e0;
+            transition: all 0.2s ease;
+            margin: 2px 0;
+            cursor: pointer;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(166, 136, 255, 0.15);
+            transform: translateX(5px);
+        }
+
+        .dropdown-item i {
+            font-size: 1.5rem;
+            color: #a688ff;
+            width: 30px;
+            text-align: center;
+        }
+
+        .dropdown-item-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dropdown-item-title {
+            font-weight: 600;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .dropdown-item-desc {
+            font-size: 0.8rem;
+            color: #8f8faf;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 10px 0;
+        }
+
+        .dropdown-container .fa-chevron-down {
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-container:hover .fa-chevron-down {
+            transform: rotate(180deg);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -31,8 +134,58 @@
                 <a href="prompts.html">Промпты</a>
                 <a href="promptrainer.html">Тренажёр</a>
             </nav>
-            <div class="btn-glow">
-                <i class="fas fa-robot" style="margin-right: 8px;"></i> Начать
+            
+            <!-- КРУТОЙ DROPDOWN ВМЕСТО ПРОСТОЙ КНОПКИ -->
+            <div class="dropdown-container">
+                <button class="dropdown-btn">
+                    <i class="fas fa-robot"></i> Начать
+                    <i class="fas fa-chevron-down" style="margin-left: 8px; font-size: 0.9rem;"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="promptrainer.html" class="dropdown-item">
+                        <i class="fas fa-bolt"></i>
+                        <div class="dropdown-item-text">
+                            <span class="dropdown-item-title">Быстрый старт</span>
+                            <span class="dropdown-item-desc">Перейти к тренажёру</span>
+                        </div>
+                    </a>
+                    <div class="dropdown-item" onclick="generateRandomPrompt()">
+                        <i class="fas fa-shuffle"></i>
+                        <div class="dropdown-item-text">
+                            <span class="dropdown-item-title">Случайный промпт</span>
+                            <span class="dropdown-item-desc">Попробуй что-то новое</span>
+                        </div>
+                    </div>
+                    <a href="prompts.html" class="dropdown-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <div class="dropdown-item-text">
+                            <span class="dropdown-item-title">Уроки</span>
+                            <span class="dropdown-item-desc">Как писать промпты</span>
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item" onclick="quickPrompt('Напиши рецепт пиццы Маргарита')">
+                        <i class="fas fa-pizza"></i>
+                        <div class="dropdown-item-text">
+                            <span class="dropdown-item-title">Пицца</span>
+                            <span class="dropdown-item-desc">Рецепт</span>
+                        </div>
+                    </div>
+                    <div class="dropdown-item" onclick="quickPrompt('Объясни квантовую физику ребёнку')">
+                        <i class="fas fa-child"></i>
+                        <div class="dropdown-item-text">
+                            <span class="dropdown-item-title">Для детей</span>
+                            <span class="dropdown-item-desc">Квантовая физика</span>
+                        </div>
+                    </div>
+                    <div class="dropdown-item" onclick="quickPrompt('Напиши пост для Instagram о кофе')">
+                        <i class="fas fa-coffee"></i>
+                        <div class="dropdown-item-text">
+                            <span class="dropdown-item-title">Instagram</span>
+                            <span class="dropdown-item-desc">Пост о кофе</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -179,6 +332,8 @@
             </div>
         </footer>
     </div>
+
+    <!-- СКРИПТЫ -->
     <script>
         // Находим все элементы с атрибутом data-link
         document.querySelectorAll('[data-link]').forEach(element => {
@@ -187,6 +342,66 @@
                 window.open(url, '_blank'); // открываем в новой вкладке
             });
         });
+
+        // Функции для быстрых промптов
+        function quickPrompt(prompt) {
+            // Сохраняем промпт в localStorage
+            localStorage.setItem('quickPrompt', prompt);
+            // Переходим на тренажёр
+            window.location.href = 'promptrainer.html';
+        }
+
+        function generateRandomPrompt() {
+            const prompts = [
+                'Напиши пост для Instagram о пользе чтения книг',
+                'Объясни, как работает нейросеть, простыми словами',
+                'Придумай 10 идей для свидания в дождливую погоду',
+                'Напиши функцию на Python для сортировки списка',
+                'Составь план тренировок на неделю для новичка',
+                'Напиши письмо другу с извинениями',
+                'Придумай креативное название для кафе с котами',
+                'Напиши рецепт вкусного завтрака за 10 минут',
+                'Объясни теорию относительности простыми словами',
+                'Придумай 5 идей для бизнеса с минимальными вложениями'
+            ];
+            const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+            localStorage.setItem('quickPrompt', randomPrompt);
+            window.location.href = 'promptrainer.html';
+        }
+
+        // Предотвращаем закрытие dropdown при клике на пункты меню
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        });
+    </script>
+
+    <!-- СКРИПТ ДЛЯ ТРЕНАЖЁРА (будет выполняться только на странице тренажёра) -->
+    <script>
+        // Проверяем, находимся ли мы на странице тренажёра
+        if (window.location.pathname.includes('promptrainer.html')) {
+            // Ждём загрузки страницы
+            document.addEventListener('DOMContentLoaded', function() {
+                const quickPrompt = localStorage.getItem('quickPrompt');
+                if (quickPrompt) {
+                    // Пробуем найти поле ввода каждые 100мс в течение 2 секунд
+                    let attempts = 0;
+                    const interval = setInterval(() => {
+                        const input = document.getElementById('promptInput');
+                        if (input) {
+                            input.value = quickPrompt;
+                            localStorage.removeItem('quickPrompt');
+                            clearInterval(interval);
+                        }
+                        attempts++;
+                        if (attempts > 20) { // 2 секунды
+                            clearInterval(interval);
+                        }
+                    }, 100);
+                }
+            });
+        }
     </script>
 </body>
 </html>
