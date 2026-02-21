@@ -178,7 +178,14 @@
 <script>
 // 🔐 ВАШ API КЛЮЧ GROQ
 const GROQ_API_KEY = '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';
+// Добавь это сразу после const GROQ_API_KEY
+const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
+const USE_PROXY = false; // Поставь true, если нужен прокси
 
+// И измени URL в fetch:
+const url = USE_PROXY 
+    ? CORS_PROXY + 'https://api.groq.com/openai/v1/chat/completions'
+    : 'https://api.groq.com/openai/v1/chat/completions';
 // АКТУАЛЬНЫЕ МОДЕЛИ GROQ
 const MODELS = {
     'llama-3.3-70b-versatile': { 
