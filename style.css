@@ -408,6 +408,28 @@ body {
 .social-links a:hover {
     color: #a688ff;
 }
+/* ЛИПКАЯ ШАПКА */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(10, 10, 26, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(166, 136, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* Добавить отступ для контента, чтобы не прилипал к шапке */
+.container {
+    padding-top: 0;
+}
+
+/* Эффект при прокрутке */
+.header.scrolled {
+    background: rgba(10, 10, 26, 0.95);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
 
 /* Адаптивность */
 @media (max-width: 768px) {

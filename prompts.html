@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Подключение того же CSS -->
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
     <style>
         /* Дополнительные стили только для этой страницы */
         .prompt-hero {
@@ -251,5 +252,16 @@
             </div>
         </footer>
     </div>
+    <script>
+        // Эффект шапки при прокрутке
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
 </body>
 </html>

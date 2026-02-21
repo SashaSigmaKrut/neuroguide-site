@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Подключение внешнего CSS -->
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
     <style>
         /* ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ DROPDOWN */
         .dropdown-container {
@@ -130,7 +131,7 @@
             </div>
             <nav class="nav">
                 <a href="#">Главная</a>
-                <a href="#">Инструменты</a>
+                <a href="tools.html">Инструменты</a>
                 <a href="prompts.html">Промпты</a>
                 <a href="trainer.html">Тренажёр</a>
             </nav>
@@ -353,10 +354,6 @@
                 e.stopPropagation();
             });
         });
-    </script>
-
-    <!-- СКРИПТ ДЛЯ ТРЕНАЖЁРА (будет выполняться только на странице тренажёра) -->
-    <script>
         // Проверяем, находимся ли мы на странице тренажёра
         if (window.location.pathname.includes('promptrainer.html')) {
             // Ждём загрузки страницы
@@ -380,6 +377,15 @@
                 }
             });
         }
+    // Эффект шапки при прокрутке
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
     </script>
 </body>
 </html>
