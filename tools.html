@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Инструменты | NeuroGuide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background: linear-gradient(135deg, #0a0a1a 0%, #15152a 100%); }
+        
+        /* Шапка */
+        .tools-header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(166,136,255,0.15), rgba(108,208,255,0.15));
+            border-radius: 50px;
+            margin: 30px 0 50px;
+        }
+        
+        .tools-header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .tools-header p {
+            color: #b0b0d0;
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .russia-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff4444, #0047ab);
+            color: white;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        /* Категории */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+        
+        .category-btn {
+            padding: 12px 30px;
+            border-radius: 50px;
+            background: rgba(30,30,50,0.7);
+            color: #b0b0d0;
+            border: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .category-btn:hover {
+            border-color: #a688ff;
+            color: #a688ff;
+            transform: translateY(-2px);
+        }
+        
+        .category-btn.active {
+            background: #a688ff;
+            color: white;
+            border-color: #a688ff;
+        }
+        
+        /* Поиск */
+        .search-container {
+            max-width: 600px;
+            margin: 30px auto 50px;
+            position: relative;
+        }
+        
+        .search-container i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8f8faf;
+            font-size: 1.2rem;
+        }
+        
+        .search-container input {
+            width: 100%;
+            padding: 18px 20px 18px 55px;
+            background: rgba(20,20,35,0.9);
+            border: 2px solid rgba(255,255,255,0.05);
+            border-radius: 60px;
+            color: white;
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+        
+        .search-container input:focus {
+            outline: none;
+            border-color: #a688ff;
+            box-shadow: 0 0 30px rgba(166,136,255,0.3);
+        }
+        
+        /* Сетка инструментов */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin: 40px 0 80px;
+        }
+        
+        .tool-card {
+            background: rgba(30,30,50,0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #a688ff, #6cd0ff);
+            opacity: 0;
+            transition: 0.3s;
+        }
+        
+        .tool-card:hover::before {
+            opacity: 1;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border-color: rgba(166,136,255,0.3);
+        }
+        
+        .tool-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #a688ff20, #6cd0ff20);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            color: #a688ff;
+            margin-bottom: 20px;
+        }
+        
+        .tool-card h3 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .tool-card p {
+            color: #b0b0d0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            min-height: 60px;
+        }
+        
+        .tool-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .tag {
+            padding: 5px 15px;
+            background: rgba(166,136,255,0.1);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: #a688ff;
+            border: 1px solid rgba(166,136,255,0.2);
+        }
+        
+        .tag.free {
+            background: rgba(0,200,150,0.1);
+            color: #00c896;
+            border-color: rgba(0,200,150,0.2);
+        }
+        
+        .tag.popular {
+            background: rgba(255,200,0,0.1);
+            color: #ffcc00;
+            border-color: rgba(255,200,0,0.2);
+        }
+        
+        .tag.russia {
+            background: rgba(255,68,68,0.1);
+            color: #ff4444;
+            border-color: rgba(255,68,68,0.2);
+        }
+        
+        .tool-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .rating {
+            color: #ffcc44;
+            font-size: 0.9rem;
+        }
+        
+        .rating span {
+            color: #8f8faf;
+            margin-left: 5px;
+        }
+        
+        .tool-btn {
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #a688ff, #8a6aff);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .tool-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(166,136,255,0.4);
+        }
+        
+        .tool-btn i {
+            margin-left: 8px;
+            font-size: 0.8rem;
+        }
+        
+        /* Счётчик результатов */
+        .results-count {
+            text-align: center;
+            color: #8f8faf;
+            margin: 20px 0 40px;
+            font-size: 0.95rem;
+        }
+        
+        .results-count span {
+            color: #a688ff;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .tools-header h1 { font-size: 2rem; }
+            .category-tabs { gap: 10px; }
+            .category-btn { padding: 10px 20px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- ШАПКА -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-brain"></i></div>
+            <div class="logo-text"><h1>NeuroGuide</h1><p>освоим AI вместе</p></div>
+        </div>
+        <nav class="nav">
+            <a href="index.html">Главная</a>
+            <a href="tools.html" class="active">Инструменты</a>
+            <a href="prompts.html">Промпты</a>
+            <a href="trainer.html">Тренажёр</a>
+        </nav>
+        <div class="btn-glow"><i class="fas fa-robot"></i> Начать</div>
+    </header>
+
+    <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> На главную</a>
+
+    <!-- ГЕРОЙ -->
+    <div class="tools-header">
+        <h1 class="section-title">🛠️ <span>Инструменты</span></h1>
+        <p>Только те нейросети, которые <strong>точно работают в России</strong> — без VPN и блокировок</p>
+        <div class="russia-badge"><i class="fas fa-flag"></i> Доступно в РФ</div>
+    </div>
+
+    <!-- КАТЕГОРИИ -->
+    <div class="category-tabs">
+        <button class="category-btn active" data-category="all">Все</button>
+        <button class="category-btn" data-category="text">📝 Текст</button>
+        <button class="category-btn" data-category="image">🎨 Изображения</button>
+        <button class="category-btn" data-category="audio">🎵 Аудио</button>
+        <button class="category-btn" data-category="code">💻 Код</button>
+        <button class="category-btn" data-category="search">🔍 Поиск</button>
+    </div>
+
+    <!-- ПОИСК -->
+    <div class="search-container">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Найти нейросеть...">
+    </div>
+
+    <!-- СЧЁТЧИК РЕЗУЛЬТАТОВ -->
+    <div class="results-count" id="resultsCount">Найдено <span>24</span> инструментов</div>
+
+    <!-- СЕТКА ИНСТРУМЕНТОВ -->
+    <div class="tools-grid" id="toolsGrid">
+        <!-- 📝 ТЕКСТОВЫЕ -->
+        <div class="tool-card" data-category="text" data-name="DeepSeek" data-description="Китайский аналог ChatGPT">
+            <div class="tool-icon"><i class="fas fa-brain"></i></div>
+            <h3>DeepSeek</h3>
+            <p>Умный ассистент для текстов, кода и анализа. Отлично понимает русский язык.</p>
+            <div class="tool-tags">
+                <span class="tag">#текст</span>
+                <span class="tag free">#бесплатно</span>
+                <span class="tag popular">#популярно</span>
+                <span class="tag russia">#РФ</span>
+            </div>
+            <div class="tool-footer">
+                <div class="rating">⭐⭐⭐⭐⭐ <span>4.9</span></div>
+                <a href="https://chat.deepseek.com/" target="_blank" class="tool-btn">Перейти <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="tool-card" data-category="text" data-name="YandexGPT" data-description="Нейросеть от Яндекса">
+            <div class="tool-icon"><i class="fas fa-yandex"></i></div>
+            <h3>YandexGPT</h3>
+            <p>Встроена в Алису и Поиск. Лучшая для повседневных задач на русском.</p>
+            <div class="tool-tags">
+                <span class="tag">#текст</span>
+                <span class="tag free">#бесплатно</span>
+                <span class="tag russia">#РФ</span>
+            </div>
+            <div class="tool-footer">
+                <div class="rating">⭐⭐⭐⭐ <span>4.5</span></div>
+                <a href="https://ya.ru/" target="_blank" class="tool-btn">Перейти <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="tool-card" data-category="text" data-name="GigaChat" data-description="Нейросеть от Сбера">
+            <div class="tool-icon"><i class="fas fa-university"></i></div>
+            <h3>GigaChat</h3>
+            <p>Мощная русскоязычная модель. Умеет писать тексты, код и отвечать на вопросы.</p>
+            <div class="tool-tags">
+                <span class="tag">#текст</span>
+                <span class="tag free">#бесплатно</span>
+                <span class="tag russia">#РФ</span>
+            </div>
+            <div class="tool-footer">
+                <div class="rating">⭐⭐⭐⭐ <span>4.4</span></div>
+                <a href="https://developers.sber.ru/gigachat" target="_blank" class="tool-btn">Перейти <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="tool-card" data-category="text" data-name="Rytr" data-description="Международный копирайтер">
+            <div class="tool-icon"><i class="fas fa-pen-fancy"></i></div>
+            <h3>Rytr</h3>
+            <p>Помощник для написания текстов, постов и писем. Работает без VPN.</p>
+            <div class="tool-tags">
+                <span class="tag">#текст</span>
+                <span class="tag">#платно</span>
+            </div>
+            <div class="tool-footer">
+                <div class="rating">⭐⭐⭐⭐ <span>4.2</span></div>
+                <a href="https://rytr.me/" target="_blank" class="tool-btn">Перейти <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <!-- 🎨 ИЗОБРАЖЕНИЯ -->
+        <div class="tool-card" data-category="image" data-name="Kandinsky" data-description="Нейросеть Сбера">
+            <div class="tool-icon"><i class="fas fa-palette"></i></div>
+            <h3>Kandinsky 3.0</h3>
+            <p>Лучшая российская нейросеть для генерации изображений. Полностью бесплатно.</p>
+            <div class="tool-tags">
+                <span class="tag">#изображения</span>
+                <span class="tag free">#бесплатно</span>
+                <span class="tag russia">#РФ</span>
+            </div>
+            <div class="tool-footer">
+                <div class="rating">⭐⭐⭐⭐⭐ <span>4.8</span></div>
+                <a href="https://www.sberbank.com/promo/kandinsky/" target="_blank" class="tool-btn">Перейти <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="tool-card" data-category="image" data-name="Shedevrum" data-description="Нейросеть Яндекса">
+            <div class="tool-icon"><i class="fas fa-yandex"></i></div>
+            <h3>Shedevrum</h3>
+            <p>Генерация изображений от Яндекса. Простой интерфейс, отличные результаты.</p>
+            <div class="tool-tags">
+                <span class="tag">#изображения</span>
+                <span class="tag free">#бесплатно</span>
+                <span class="tag russia">#РФ</span>
+            </div>
+            <div class="tool-footer">
+                <div class="rating">⭐⭐⭐⭐ <span>4.3</span></div>
+                <a href="https://shedevrum.yandex.ru/" target="_blank" class="tool-btn">Перейти <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="tool-card" data-category="image" data-name="FusionBrain" data-description="SberDevices">
+            <div class="tool-icon"><i class="fas fa-microchip"></i></div>
+            <h3>FusionBrain</h3>
+            <p>Платформа для генерации и редактирования изображений от SberDevices.</p>
+            <div class="tool-tags">
+                <span class="tag">#изображения</span>
+                <span class="tag free">#бесплатно</span>
+                <span class="tag russia">#РФ</span>
+            </div>
+            <div class="tool-footer">
+                <div class="rating">⭐⭐⭐⭐ <span>4.1</span></div>
+                <a href="https://fusionbrain.ai/" target="_blank" class="tool-btn">Перейти <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="tool-card" data-category="image" data-name="Playground AI" data-description="Международная">
+            <div class="tool-icon"><i class="fas fa-play"></i></div>
+            <h3>Playground AI</h3>
+            <p>Популярная платформа для генерации изображений. Доступна из РФ.</p>
+            <div class="tool-tags">
+                <span class="tag">#изображения</span>
+                <span class="tag">#условно</span>
+            </div>
+            <div class="tool-footer">
+                <div class="rating">⭐⭐⭐⭐ <span>4.4</span></div>
+                <a href="https://playgroundai.com/" target="_blank" class="tool-btn">Перейти <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <!-- 🎵 АУДИО -->
+        <div class="tool-card" data-category="audio" data-name="Suno AI" data-description="Генерация музыки">
+            <div class="tool-icon"><i class="fas fa-music"></i></div>
+            <h3>Suno AI</h3>
+            <p>Генерация песен и музыки по тексту. Доступен из РФ.</p>
+            <div class="tool-tags">
+                <span class="tag">#аудио</span>
+                <span class="tag">#музыка</span>
+                <span class="tag free">#бесплатно</span>
+            </div>
+            <div class="tool-footer">
+                <div class="rating">⭐⭐⭐⭐⭐ <span>4.7</span></div>
+                <a href="https://suno.com/" target="_blank" class="tool-btn">Перейти <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="tool-card" data-category="audio" data-name="ElevenLabs" data-description="Озвучка текста">
+            <div class="tool-icon"><i class="fas fa-microphone"></i></div>
+            <h3>ElevenLabs</h3>
+            <p>Лучшая нейросеть для озвучки текста реалистичными голосами.</p>
+            <div class="tool-tags">
+                <span class="tag">#аудио</span>
+                <span class="tag">#голос</span>
+                <span class="tag">#условно</span>
+            </div>
+            <div class="tool-footer">
+                <div class="rating">⭐⭐⭐⭐⭐ <span>4.9</span></div>
+                <a href="https://elevenlabs.io/" target="_blank" class="tool-btn">Перейти <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <!-- 💻 КОД -->
+        <div class="tool-card" data-category="code" data-name="GitHub Copilot" data-description="Помощник в коде">
+            <div class="tool-icon"><i class="fab fa-github"></i></div>
+            <h3>GitHub Copilot</h3>
+            <p>ИИ-помощник для программистов. Работает в VS Code и других редакторах.</p>
+            <div class="tool-tags">
+                <span class="tag">#код</span>
+                <span class="tag">#платно</span>
+            </div>
+            <div class="tool-footer">
+                <div class="rating">⭐⭐⭐⭐⭐ <span>4.8</span></div>
+                <a href="https://github.com/features/copilot" target="_blank" class="tool-btn">Перейти <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="tool-card" data-category="code" data-name="Tabnine" data-description="Автодополнение кода">
+            <div class="tool-icon"><i class="fas fa-code"></i></div>
+            <h3>Tabnine</h3>
+            <p>ИИ-помощник для автодополнения кода. Есть бесплатная версия.</p>
+            <div class="tool-tags">
+                <span class="tag">#код</span>
+                <span class="tag free">#бесплатно</span>
+            </div>
+            <div class="tool-footer">
+                <div class="rating">⭐⭐⭐⭐ <span>4.3</span></div>
+                <a href="https://www.tabnine.com/" target="_blank" class="tool-btn">Перейти <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="tool-card" data-category="code" data-name="Codeium" data-description="Бесплатный Copilot">
+            <div class="tool-icon"><i class="fas fa-bolt"></i></div>
+            <h3>Codeium</h3>
+            <p>Бесплатный аналог Copilot. Отлично работает, доступен в РФ.</p>
+            <div class="tool-tags">
+                <span class="tag">#код</span>
+                <span class="tag free">#бесплатно</span>
+            </div>
+            <div class="tool-footer">
+                <div class="rating">⭐⭐⭐⭐ <span>4.5</span></div>
+                <a href="https://codeium.com/" target="_blank" class="tool-btn">Перейти <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <!-- 🔍 ПОИСК -->
+        <div class="tool-card" data-category="search" data-name="Perplexity AI" data-description="Поиск с ИИ">
+            <div class="tool-icon"><i class="fas fa-search"></i></div>
+            <h3>Perplexity AI</h3>
+            <p>Поисковик с искусственным интеллектом. Даёт ответы с источниками.</p>
+            <div class="tool-tags">
+                <span class="tag">#поиск</span>
+                <span class="tag free">#бесплатно</span>
+            </div>
+            <div class="tool-footer">
+                <div class="rating">⭐⭐⭐⭐⭐ <span>4.7</span></div>
+                <a href="https://www.perplexity.ai/" target="_blank" class="tool-btn">Перейти <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="tool-card" data-category="search" data-name="You.com" data-description="Поиск с ИИ">
+            <div class="tool-icon"><i class="fas fa-compass"></i></div>
+            <h3>You.com</h3>
+            <p>Поисковая система с интеграцией ИИ. Работает без проблем.</p>
+            <div class="tool-tags">
+                <span class="tag">#поиск</span>
+                <span class="tag free">#бесплатно</span>
+            </div>
+            <div class="tool-footer">
+                <div class="rating">⭐⭐⭐⭐ <span>4.2</span></div>
+                <a href="https://you.com/" target="_blank" class="tool-btn">Перейти <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ФУТЕР -->
+    <footer class="footer">
+        <div>© 2026 NeuroGuide • Доступные инструменты</div>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-telegram"></i></a>
+            <a href="#"><i class="fab fa-vk"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+        </div>
+    </footer>
+</div>
+
+<!-- СКРИПТЫ -->
+<script>
+    // Фильтрация по категориям
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    const toolCards = document.querySelectorAll('.tool-card');
+    const searchInput = document.getElementById('searchInput');
+    const resultsCount = document.getElementById('resultsCount');
+
+    function filterTools() {
+        const activeCategory = document.querySelector('.category-btn.active').dataset.category;
+        const searchTerm = searchInput.value.toLowerCase();
+        
+        let visibleCount = 0;
+        
+        toolCards.forEach(card => {
+            const cardCategory = card.dataset.category;
+            const cardName = card.dataset.name.toLowerCase();
+            const cardDesc = card.dataset.description.toLowerCase();
+            
+            const matchesCategory = activeCategory === 'all' || cardCategory === activeCategory;
+            const matchesSearch = searchTerm === '' || 
+                                 cardName.includes(searchTerm) || 
+                                 cardDesc.includes(searchTerm);
+            
+            if (matchesCategory && matchesSearch) {
+                card.style.display = 'block';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        
+        resultsCount.innerHTML = `Найдено <span>${visibleCount}</span> инструментов`;
+    }
+
+    // Обработчики категорий
+    categoryBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            categoryBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            filterTools();
+        });
+    });
+
+    // Обработчик поиска
+    searchInput.addEventListener('input', filterTools);
+
+    // Инициализация счётчика
+    filterTools();
+</script>
+</body>
+</html>
