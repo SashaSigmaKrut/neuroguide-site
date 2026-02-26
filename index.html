@@ -114,6 +114,147 @@
         .dropdown-container:hover .fa-chevron-down {
             transform: rotate(180deg);
         }
+
+        /* МОДАЛЬНОЕ ОКНО ДЛЯ СЛУЧАЙНОГО ПРОМПТА */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a30, #14142a);
+            border-radius: 40px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            border: 1px solid rgba(166, 136, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #8f8faf;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #a688ff;
+            transform: rotate(90deg);
+        }
+
+        .modal-prompt {
+            background: rgba(20, 20, 35, 0.9);
+            border-radius: 25px;
+            padding: 30px;
+            margin: 20px 0;
+            border-left: 5px solid #a688ff;
+            color: #e0e0e0;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .modal-btn {
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+        }
+
+        .modal-btn.primary {
+            background: linear-gradient(135deg, #a688ff, #8a6aff);
+            color: white;
+        }
+
+        .modal-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(166, 136, 255, 0.4);
+        }
+
+        .modal-btn.secondary {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #b0b0d0;
+        }
+
+        .modal-btn.secondary:hover {
+            border-color: #a688ff;
+            color: #a688ff;
+        }
+
+        .random-prompt-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(166, 136, 255, 0.1);
+            border: 1px solid rgba(166, 136, 255, 0.3);
+            color: #a688ff;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 20px 0;
+        }
+
+        .random-prompt-btn:hover {
+            background: rgba(166, 136, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(166, 136, 255, 0.3);
+        }
+
+        .random-prompt-btn i {
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
@@ -136,7 +277,7 @@
                 <a href="trainer.html">Тренажёр</a>
             </nav>
             
-            <!-- КРУТОЙ DROPDOWN (без лишних пунктов) -->
+            <!-- КРУТОЙ DROPDOWN -->
             <div class="dropdown-container">
                 <button class="dropdown-btn">
                     <i class="fas fa-robot"></i> Начать
@@ -150,7 +291,7 @@
                             <span class="dropdown-item-desc">Перейти к тренажёру</span>
                         </div>
                     </a>
-                    <div class="dropdown-item" onclick="generateRandomPrompt()">
+                    <div class="dropdown-item" onclick="openRandomPromptModal()">
                         <i class="fas fa-shuffle"></i>
                         <div class="dropdown-item-text">
                             <span class="dropdown-item-title">Случайный промпт</span>
@@ -187,6 +328,13 @@
                         <span class="stat-label">рейтинг</span>
                     </div>
                 </div>
+                
+                <!-- КНОПКА СЛУЧАЙНОГО ПРОМПТА -->
+                <button class="random-prompt-btn" onclick="openRandomPromptModal()">
+                    <i class="fas fa-shuffle"></i>
+                    Случайный промпт
+                    <i class="fas fa-arrow-right"></i>
+                </button>
             </div>
             <div class="hero-image">
                 <div class="ai-grid">
@@ -312,41 +460,100 @@
         </footer>
     </div>
 
+    <!-- МОДАЛЬНОЕ ОКНО ДЛЯ СЛУЧАЙНОГО ПРОМПТА -->
+    <div class="modal-overlay" id="promptModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🎲 Случайный промпт</h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-prompt" id="randomPromptDisplay">
+                <!-- Здесь появится случайный промпт -->
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn secondary" onclick="generateNewPrompt()">
+                    <i class="fas fa-shuffle"></i> Ещё
+                </button>
+                <button class="modal-btn primary" onclick="usePrompt()">
+                    <i class="fas fa-rocket"></i> Попробовать в тренажёре
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- СКРИПТЫ -->
     <script>
         // Находим все элементы с атрибутом data-link
         document.querySelectorAll('[data-link]').forEach(element => {
             element.addEventListener('click', function() {
                 const url = this.getAttribute('data-link');
-                window.open(url, '_blank'); // открываем в новой вкладке
+                window.open(url, '_blank');
             });
         });
 
-        // Функции для быстрых промптов
-        function quickPrompt(prompt) {
-            // Сохраняем промпт в localStorage
-            localStorage.setItem('quickPrompt', prompt);
-            // Переходим на тренажёр
-            window.location.href = 'promptrainer.html';
+        // МАССИВ СО СЛУЧАЙНЫМИ ПРОМПТАМИ
+        const randomPrompts = [
+            "Напиши пост для Instagram о пользе чтения книг. Используй эмодзи и хештеги.",
+            "Объясни квантовую физику так, как будто я пятилетний ребёнок. Используй простые аналогии.",
+            "Напиши функцию на JavaScript, которая сортирует массив чисел. Добавь комментарии.",
+            "Придумай 5 креативных идей для свидания в дождливую погоду.",
+            "Составь план тренировок на неделю для новичка. Цель: похудеть и подтянуть тело.",
+            "Напиши рецепт вкусного и полезного завтрака, который готовится за 10 минут.",
+            "Придумай название для кафе с котами. Добавь описание концепции.",
+            "Напиши письмо другу с извинениями. Будь искренним и тёплым.",
+            "Объясни, как работает нейросеть, простыми словами. Используй аналогии.",
+            "Напиши тост на юбилей для друга. Добавь юмор и искренность.",
+            "Составь список из 10 книг, которые должен прочитать каждый программист.",
+            "Напиши сценарий для короткого видео на YouTube о путешествиях.",
+            "Придумай 5 идей для стартапа в сфере экологии.",
+            "Объясни разницу между ИИ, машинным обучением и глубоким обучением.",
+            "Напиши мотивационную речь для студентов перед экзаменами."
+        ];
+
+        let currentPrompt = '';
+
+        // Открыть модальное окно со случайным промптом
+        function openRandomPromptModal() {
+            generateNewPrompt();
+            document.getElementById('promptModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
-        function generateRandomPrompt() {
-            const prompts = [
-                'Напиши пост для Instagram о пользе чтения книг',
-                'Объясни, как работает нейросеть, простыми словами',
-                'Придумай 10 идей для свидания в дождливую погоду',
-                'Напиши функцию на Python для сортировки списка',
-                'Составь план тренировок на неделю для новичка',
-                'Напиши письмо другу с извинениями',
-                'Придумай креативное название для кафе с котами',
-                'Напиши рецепт вкусного завтрака за 10 минут',
-                'Объясни теорию относительности простыми словами',
-                'Придумай 5 идей для бизнеса с минимальными вложениями'
-            ];
-            const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
-            localStorage.setItem('quickPrompt', randomPrompt);
-            window.location.href = 'promptrainer.html';
+        // Закрыть модальное окно
+        function closeModal() {
+            document.getElementById('promptModal').classList.remove('active');
+            document.body.style.overflow = '';
         }
+
+        // Сгенерировать новый случайный промпт
+        function generateNewPrompt() {
+            const randomIndex = Math.floor(Math.random() * randomPrompts.length);
+            currentPrompt = randomPrompts[randomIndex];
+            document.getElementById('randomPromptDisplay').textContent = '"' + currentPrompt + '"';
+        }
+
+        // Использовать промпт в тренажёре
+        function usePrompt() {
+            localStorage.setItem('quickPrompt', currentPrompt);
+            window.location.href = 'trainer.html';
+        }
+
+        // Закрыть модальное окно по клику на фон
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('promptModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Закрыть по нажатию ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
 
         // Предотвращаем закрытие dropdown при клике на пункты меню
         document.querySelectorAll('.dropdown-item').forEach(item => {
@@ -354,13 +561,22 @@
                 e.stopPropagation();
             });
         });
+
+        // Эффект шапки при прокрутке
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
         // Проверяем, находимся ли мы на странице тренажёра
-        if (window.location.pathname.includes('promptrainer.html')) {
-            // Ждём загрузки страницы
+        if (window.location.pathname.includes('trainer.html')) {
             document.addEventListener('DOMContentLoaded', function() {
                 const quickPrompt = localStorage.getItem('quickPrompt');
                 if (quickPrompt) {
-                    // Пробуем найти поле ввода каждые 100мс в течение 2 секунд
                     let attempts = 0;
                     const interval = setInterval(() => {
                         const input = document.getElementById('promptInput');
@@ -370,22 +586,13 @@
                             clearInterval(interval);
                         }
                         attempts++;
-                        if (attempts > 20) { // 2 секунды
+                        if (attempts > 20) {
                             clearInterval(interval);
                         }
                     }, 100);
                 }
             });
         }
-    // Эффект шапки при прокрутке
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('.header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
     </script>
 </body>
 </html>
