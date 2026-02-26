@@ -435,15 +435,32 @@
             card.dataset.name = tool.name;
             card.dataset.description = tool.desc;
             
+            // СОБИРАЕМ ВСЕ ТЕГИ В ОДИН МАССИВ (БЕЗ ДУБЛИКАТОВ)
+            let allTags = [...tool.tags];
+            
+            // Добавляем дополнительные теги, если их нет в массиве
+            if (tool.free && !allTags.includes('#бесплатно')) {
+                allTags.push('#бесплатно');
+            }
+            if (tool.russia && !allTags.includes('#РФ')) {
+                allTags.push('#РФ');
+            }
+            if (tool.rating >= 4.7 && !allTags.includes('#популярно')) {
+                allTags.push('#популярно');
+            }
+            
+            // Формируем HTML для тегов
             let tagsHtml = '';
-            tool.tags.forEach(tag => {
-                const tagClass = tag === '#заблокировано' ? 'blocked' : (tag === '#РФ' ? 'russia' : (tag === '#бесплатно' ? 'free' : (tag === '#популярно' ? 'popular' : '')));
+            allTags.forEach(tag => {
+                // Определяем класс для тега
+                let tagClass = '';
+                if (tag === '#заблокировано') tagClass = 'blocked';
+                else if (tag === '#РФ') tagClass = 'russia';
+                else if (tag === '#бесплатно') tagClass = 'free';
+                else if (tag === '#популярно') tagClass = 'popular';
+                
                 tagsHtml += `<span class="tag ${tagClass}">${tag}</span>`;
             });
-            
-            if (tool.free) tagsHtml += `<span class="tag free">#бесплатно</span>`;
-            if (tool.russia) tagsHtml += `<span class="tag russia">#РФ</span>`;
-            if (tool.rating >= 4.7) tagsHtml += `<span class="tag popular">#популярно</span>`;
             
             const stars = '⭐'.repeat(Math.floor(tool.rating));
             
