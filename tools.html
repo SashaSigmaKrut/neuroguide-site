@@ -197,15 +197,15 @@
         }
         
         .tag.russia {
-            background: rgba(68,255,68,0.1);
-            color: #44ff44;
-            border-color: rgba(68,255,68,0.2);
+            background: rgba(255,68,68,0.1);
+            color: #ff4444;
+            border-color: rgba(255,68,68,0.2);
         }
         
         .tag.blocked {
-            background: rgba(255, 68, 68, 0.15);
-            color: #ff6b6b;
-            border-color: rgba(255, 68, 68, 0.3);
+            background: rgba(128,128,128,0.1);
+            color: #a0a0a0;
+            border-color: rgba(128,128,128,0.2);
         }
         
         .tool-footer {
@@ -287,18 +287,18 @@
 
     <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> На главную</a>
 
-    <!-- ГЕРОЙ (ОБНОВЛЁН) -->
+    <!-- ГЕРОЙ -->
     <div class="tools-header">
         <h1 class="section-title">🛠️ <span>Инструменты</span></h1>
         <p style="color: #b0b0d0; max-width: 700px; margin: 20px auto;">Подборка нейросетей для разных задач</p>
         <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
             <span class="tag free" style="font-size: 1rem;">#бесплатно</span>
-            <span class="tag russia" style="font-size: 1rem;">#доступно_в_РФ</span>
-            <span class="tag blocked" style="font-size: 1rem;">#заблокировано_в_РФ</span>
+            <span class="tag russia" style="font-size: 1rem;">#РФ</span>
+            <span class="tag blocked" style="font-size: 1rem;">#заблокировано</span>
         </div>
     </div>
 
-    <!-- КАТЕГОРИИ (ДОБАВИЛ ВИДЕО) -->
+    <!-- КАТЕГОРИИ -->
     <div class="category-tabs">
         <button class="category-btn active" data-category="all">Все</button>
         <button class="category-btn" data-category="text">📝 Текст</button>
@@ -316,9 +316,9 @@
     </div>
 
     <!-- СЧЁТЧИК РЕЗУЛЬТАТОВ -->
-    <div class="results-count" id="resultsCount">Найдено <span>29</span> инструментов</div>
+    <div class="results-count" id="resultsCount">Найдено <span>31</span> инструментов</div>
 
-    <!-- СЕТКА ИНСТРУМЕНТОВ (БУДЕТ ЗАПОЛНЕНА СКРИПТОМ) -->
+    <!-- СЕТКА ИНСТРУМЕНТОВ -->
     <div class="tools-grid" id="toolsGrid"></div>
 
     <!-- ФУТЕР -->
@@ -332,26 +332,15 @@
     </footer>
 </div>
 
-<!-- СКРИПТЫ -->
 <script>
-    // Функция для сортировки карточек по алфавиту
     function sortToolsAlphabetically() {
         const grid = document.getElementById('toolsGrid');
         const cards = Array.from(grid.children);
-        
-        // Сортируем по названию (data-name)
-        cards.sort((a, b) => {
-            const nameA = a.dataset.name.toLowerCase();
-            const nameB = b.dataset.name.toLowerCase();
-            return nameA.localeCompare(nameB);
-        });
-        
-        // Очищаем сетку и добавляем отсортированные карточки
+        cards.sort((a, b) => a.dataset.name.toLowerCase().localeCompare(b.dataset.name.toLowerCase()));
         grid.innerHTML = '';
         cards.forEach(card => grid.appendChild(card));
     }
 
-    // Фильтрация по категориям
     const categoryBtns = document.querySelectorAll('.category-btn');
     const searchInput = document.getElementById('searchInput');
     const resultsCount = document.getElementById('resultsCount');
@@ -360,7 +349,6 @@
         const toolCards = document.querySelectorAll('.tool-card');
         const activeCategory = document.querySelector('.category-btn.active').dataset.category;
         const searchTerm = searchInput.value.toLowerCase();
-        
         let visibleCount = 0;
         
         toolCards.forEach(card => {
@@ -369,9 +357,7 @@
             const cardDesc = card.dataset.description.toLowerCase();
             
             const matchesCategory = activeCategory === 'all' || cardCategory === activeCategory;
-            const matchesSearch = searchTerm === '' || 
-                                 cardName.includes(searchTerm) || 
-                                 cardDesc.includes(searchTerm);
+            const matchesSearch = searchTerm === '' || cardName.includes(searchTerm) || cardDesc.includes(searchTerm);
             
             if (matchesCategory && matchesSearch) {
                 card.style.display = 'block';
@@ -384,7 +370,6 @@
         resultsCount.innerHTML = `Найдено <span>${visibleCount}</span> инструментов`;
     }
 
-    // Обработчики категорий
     categoryBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             categoryBtns.forEach(b => b.classList.remove('active'));
@@ -393,60 +378,56 @@
         });
     });
 
-    // Обработчик поиска
     searchInput.addEventListener('input', filterTools);
 
-    // Создание всех карточек при загрузке
     document.addEventListener('DOMContentLoaded', function() {
         const grid = document.getElementById('toolsGrid');
         
-        // МАССИВ СО ВСЕМИ НЕЙРОСЕТЯМИ (29 штук)
         const tools = [
             // 📝 ТЕКСТОВЫЕ
-            { category: 'text', name: 'ChatGPT', icon: 'fab fa-openai', desc: 'Популярнейший ИИ-ассистент.', tags: ['#текст', '#популярно'], free: false, blocked: true, rating: 4.9, url: 'https://chat.openai.com/' },
-            { category: 'text', name: 'Claude', icon: 'fas fa-robot', desc: 'ИИ от Anthropic.', tags: ['#текст'], free: false, blocked: true, rating: 4.8, url: 'https://claude.ai/' },
-            { category: 'text', name: 'Copy.ai', icon: 'fas fa-copy', desc: 'Генерация маркетинговых текстов, постов и писем.', tags: ['#текст', '#маркетинг'], free: true, blocked: false, rating: 4.3, url: 'https://www.copy.ai/' },
-            { category: 'text', name: 'DeepSeek', icon: 'fas fa-brain', desc: 'Умный ассистент для текстов, кода и анализа. Отлично понимает русский язык.', tags: ['#текст', '#популярно'], free: true, blocked: false, rating: 4.9, url: 'https://chat.deepseek.com/' },
-            { category: 'text', name: 'Gemini', icon: 'fab fa-google', desc: 'ИИ от Google.', tags: ['#текст'], free: true, blocked: true, rating: 4.7, url: 'https://gemini.google.com/' },
-            { category: 'text', name: 'GigaChat', icon: 'fas fa-university', desc: 'Мощная русскоязычная модель от Сбера. Умеет писать тексты и код.', tags: ['#текст', '#РФ'], free: true, blocked: false, rating: 4.4, url: 'https://giga.chat/' },
-            { category: 'text', name: 'Notion AI', icon: 'fas fa-book', desc: 'ИИ-помощник встроенный в Notion. Помогает писать и редактировать.', tags: ['#текст'], free: false, blocked: false, rating: 4.5, url: 'https://www.notion.so/product/ai' },
-            { category: 'text', name: 'Rytr', icon: 'fas fa-pen-fancy', desc: 'Помощник для написания текстов, постов и писем.', tags: ['#текст'], free: false, blocked: false, rating: 4.2, url: 'https://rytr.me/' },
-            { category: 'text', name: 'Writesonic', icon: 'fas fa-bolt', desc: 'Генерация контента для соцсетей, блогов и рекламы.', tags: ['#текст'], free: true, blocked: false, rating: 4.3, url: 'https://writesonic.com/' },
-            { category: 'text', name: 'YandexGPT', icon: 'fab fa-yandex', desc: 'Встроена в Алису и Поиск. Лучшая для повседневных задач на русском.', tags: ['#текст', '#РФ'], free: true, blocked: false, rating: 4.5, url: 'https://ya.ru/' },
+            { category: 'text', name: 'ChatGPT', icon: 'fab fa-openai', desc: 'Популярнейший ИИ-ассистент. Требует VPN.', tags: ['#текст', '#популярно', '#заблокировано'], free: false, russia: false, rating: 4.9, url: 'https://chat.openai.com/' },
+            { category: 'text', name: 'Claude', icon: 'fas fa-robot', desc: 'ИИ от Anthropic. Требует VPN.', tags: ['#текст', '#заблокировано'], free: false, russia: false, rating: 4.8, url: 'https://claude.ai/' },
+            { category: 'text', name: 'Copy.ai', icon: 'fas fa-copy', desc: 'Генерация маркетинговых текстов. Работает без VPN.', tags: ['#текст', '#маркетинг'], free: true, russia: true, rating: 4.3, url: 'https://www.copy.ai/' },
+            { category: 'text', name: 'DeepSeek', icon: 'fas fa-brain', desc: 'Умный ассистент для текстов, кода и анализа. Отлично понимает русский язык. Работает без VPN.', tags: ['#текст', '#популярно'], free: true, russia: true, rating: 4.9, url: 'https://chat.deepseek.com/' },
+            { category: 'text', name: 'Gemini', icon: 'fab fa-google', desc: 'ИИ от Google. Требует VPN.', tags: ['#текст', '#заблокировано'], free: true, russia: false, rating: 4.7, url: 'https://gemini.google.com/' },
+            { category: 'text', name: 'GigaChat', icon: 'fas fa-university', desc: 'Мощная русскоязычная модель от Сбера. Работает без VPN.', tags: ['#текст', '#РФ'], free: true, russia: true, rating: 4.4, url: 'https://giga.chat/' },
+            { category: 'text', name: 'Notion AI', icon: 'fas fa-book', desc: 'ИИ-помощник встроенный в Notion. Работает без VPN.', tags: ['#текст'], free: false, russia: true, rating: 4.5, url: 'https://www.notion.so/product/ai' },
+            { category: 'text', name: 'Rytr', icon: 'fas fa-pen-fancy', desc: 'Помощник для написания текстов. Работает без VPN.', tags: ['#текст'], free: false, russia: true, rating: 4.2, url: 'https://rytr.me/' },
+            { category: 'text', name: 'Writesonic', icon: 'fas fa-bolt', desc: 'Генерация контента для соцсетей. Работает без VPN.', tags: ['#текст'], free: true, russia: true, rating: 4.3, url: 'https://writesonic.com/' },
+            { category: 'text', name: 'YandexGPT', icon: 'fab fa-yandex', desc: 'Встроена в Алису и Поиск. Работает без VPN.', tags: ['#текст', '#РФ'], free: true, russia: true, rating: 4.5, url: 'https://ya.ru/' },
 
             // 🎨 ИЗОБРАЖЕНИЯ
-            { category: 'image', name: 'Adobe Firefly', icon: 'fab fa-adobe', desc: 'Генерация изображений через Adobe Photoshop.', tags: ['#изображения'], free: false, blocked: true, rating: 4.6, url: 'https://www.adobe.com/products/firefly.html' },
-            { category: 'image', name: 'FusionBrain', icon: 'fas fa-microchip', desc: 'Платформа для генерации и редактирования изображений от SberDevices.', tags: ['#изображения', '#РФ'], free: true, blocked: false, rating: 4.1, url: 'https://fusionbrain.ai/' },
-            { category: 'image', name: 'Kandinsky 3.0', icon: 'fas fa-palette', desc: 'Лучшая российская нейросеть для генерации изображений.', tags: ['#изображения', '#РФ'], free: true, blocked: false, rating: 4.8, url: 'https://www.sberbank.ru/ru/person/kandinsky' },
-            { category: 'image', name: 'Leonardo AI', icon: 'fas fa-paint-brush', desc: 'Популярный генератор изображений.', tags: ['#изображения'], free: true, blocked: false, rating: 4.7, url: 'https://leonardo.ai/' },
-            { category: 'image', name: 'Lexica', icon: 'fas fa-search', desc: 'Поиск и генерация изображений по промптам.', tags: ['#изображения'], free: true, blocked: false, rating: 4.4, url: 'https://lexica.art/' },
-            { category: 'image', name: 'Photoshop AI', icon: 'fas fa-camera', desc: 'Нейросети в Adobe Photoshop.', tags: ['#изображения'], free: false, blocked: true, rating: 4.7, url: 'https://www.adobe.com/products/photoshop.html' },
-            { category: 'image', name: 'Playground AI', icon: 'fas fa-play', desc: 'Платформа для генерации изображений.', tags: ['#изображения'], free: true, blocked: false, rating: 4.4, url: 'https://playgroundai.com/' },
-            { category: 'image', name: 'Shedevrum', icon: 'fab fa-yandex', desc: 'Генерация изображений от Яндекса. Простой интерфейс.', tags: ['#изображения', '#РФ'], free: true, blocked: false, rating: 4.3, url: 'https://shedevrum.ai/' },
+            { category: 'image', name: 'Adobe Firefly', icon: 'fab fa-adobe', desc: 'Генерация изображений через Adobe. Требует VPN.', tags: ['#изображения', '#заблокировано'], free: false, russia: false, rating: 4.6, url: 'https://www.adobe.com/products/firefly.html' },
+            { category: 'image', name: 'FusionBrain', icon: 'fas fa-microchip', desc: 'Платформа от SberDevices. Работает без VPN.', tags: ['#изображения', '#РФ'], free: true, russia: true, rating: 4.1, url: 'https://fusionbrain.ai/' },
+            { category: 'image', name: 'Kandinsky 3.0', icon: 'fas fa-palette', desc: 'Лучшая российская нейросеть для генерации изображений. Работает без VPN.', tags: ['#изображения', '#РФ'], free: true, russia: true, rating: 4.8, url: 'https://www.sberbank.ru/ru/person/kandinsky' },
+            { category: 'image', name: 'Leonardo AI', icon: 'fas fa-paint-brush', desc: 'Популярный генератор изображений. Работает без VPN.', tags: ['#изображения'], free: true, russia: true, rating: 4.7, url: 'https://leonardo.ai/' },
+            { category: 'image', name: 'Lexica', icon: 'fas fa-search', desc: 'Поиск и генерация изображений. Работает без VPN.', tags: ['#изображения'], free: true, russia: true, rating: 4.4, url: 'https://lexica.art/' },
+            { category: 'image', name: 'Photoshop AI', icon: 'fas fa-camera', desc: 'Нейросети в Adobe Photoshop. Требует VPN.', tags: ['#изображения', '#заблокировано'], free: false, russia: false, rating: 4.7, url: 'https://www.adobe.com/products/photoshop.html' },
+            { category: 'image', name: 'Playground AI', icon: 'fas fa-play', desc: 'Платформа для генерации изображений. Работает без VPN.', tags: ['#изображения'], free: true, russia: true, rating: 4.4, url: 'https://playgroundai.com/' },
+            { category: 'image', name: 'Shedevrum', icon: 'fab fa-yandex', desc: 'Генерация изображений от Яндекса. Работает без VPN.', tags: ['#изображения', '#РФ'], free: true, russia: true, rating: 4.3, url: 'https://shedevrum.ai/' },
 
             // 🎵 АУДИО
-            { category: 'audio', name: 'AIVA', icon: 'fas fa-music', desc: 'Генерация классической музыки.', tags: ['#аудио', '#музыка'], free: true, blocked: true, rating: 4.5, url: 'https://www.aiva.ai/' },
-            { category: 'audio', name: 'ElevenLabs', icon: 'fas fa-microphone', desc: 'Лучшая нейросеть для озвучки текста.', tags: ['#аудио', '#голос'], free: true, blocked: true, rating: 4.9, url: 'https://elevenlabs.io/' },
-            { category: 'audio', name: 'Soundraw', icon: 'fas fa-headphones', desc: 'Генерация музыки.', tags: ['#аудио', '#музыка'], free: true, blocked: true, rating: 4.3, url: 'https://soundraw.io/' },
-            { category: 'audio', name: 'Suno AI', icon: 'fas fa-music', desc: 'Генерация песен и музыки.', tags: ['#аудио', '#музыка'], free: true, blocked: true, rating: 4.7, url: 'https://suno.com/' },
-            { category: 'audio', name: 'Voicemod', icon: 'fas fa-voice', desc: 'Изменение голоса в реальном времени.', tags: ['#аудио', '#голос'], free: true, blocked: false, rating: 4.4, url: 'https://www.voicemod.net/' },
+            { category: 'audio', name: 'AIVA', icon: 'fas fa-music', desc: 'Генерация классической музыки. Требует VPN.', tags: ['#аудио', '#музыка', '#заблокировано'], free: true, russia: false, rating: 4.5, url: 'https://www.aiva.ai/' },
+            { category: 'audio', name: 'ElevenLabs', icon: 'fas fa-microphone', desc: 'Лучшая нейросеть для озвучки текста. Требует VPN.', tags: ['#аудио', '#голос', '#заблокировано'], free: true, russia: false, rating: 4.9, url: 'https://elevenlabs.io/' },
+            { category: 'audio', name: 'Soundraw', icon: 'fas fa-headphones', desc: 'Генерация музыки. Требует VPN.', tags: ['#аудио', '#музыка', '#заблокировано'], free: true, russia: false, rating: 4.3, url: 'https://soundraw.io/' },
+            { category: 'audio', name: 'Suno AI', icon: 'fas fa-music', desc: 'Генерация песен и музыки. Требует VPN.', tags: ['#аудио', '#музыка', '#заблокировано'], free: true, russia: false, rating: 4.7, url: 'https://suno.com/' },
+            { category: 'audio', name: 'Voicemod', icon: 'fas fa-voice', desc: 'Изменение голоса в реальном времени. Работает без VPN.', tags: ['#аудио', '#голос'], free: true, russia: true, rating: 4.4, url: 'https://www.voicemod.net/' },
 
             // 💻 КОД
-            { category: 'code', name: 'Codeium', icon: 'fas fa-bolt', desc: 'Бесплатный аналог Copilot. Отлично работает.', tags: ['#код'], free: true, blocked: false, rating: 4.5, url: 'https://codeium.com/' },
-            { category: 'code', name: 'GitHub Copilot', icon: 'fab fa-github', desc: 'ИИ-помощник для программистов', tags: ['#код'], free: false, blocked: true, rating: 4.8, url: 'https://github.com/features/copilot' },
-            { category: 'code', name: 'Replit AI', icon: 'fas fa-code', desc: 'Встроенный ИИ-помощник в Replit.', tags: ['#код'], free: true, blocked: false, rating: 4.3, url: 'https://replit.com/' },
-            { category: 'code', name: 'Tabnine', icon: 'fas fa-code', desc: 'ИИ для автодополнения кода. Есть бесплатная версия.', tags: ['#код'], free: true, blocked: false, rating: 4.3, url: 'https://www.tabnine.com/' },
+            { category: 'code', name: 'Codeium', icon: 'fas fa-bolt', desc: 'Бесплатный аналог Copilot. Работает без VPN.', tags: ['#код'], free: true, russia: true, rating: 4.5, url: 'https://codeium.com/' },
+            { category: 'code', name: 'GitHub Copilot', icon: 'fab fa-github', desc: 'ИИ-помощник для программистов. Требует VPN.', tags: ['#код', '#заблокировано'], free: false, russia: false, rating: 4.8, url: 'https://github.com/features/copilot' },
+            { category: 'code', name: 'Replit AI', icon: 'fas fa-code', desc: 'Встроенный ИИ-помощник в Replit. Работает без VPN.', tags: ['#код'], free: true, russia: true, rating: 4.3, url: 'https://replit.com/' },
+            { category: 'code', name: 'Tabnine', icon: 'fas fa-code', desc: 'ИИ для автодополнения кода. Работает без VPN.', tags: ['#код'], free: true, russia: true, rating: 4.3, url: 'https://www.tabnine.com/' },
 
             // 🎥 ВИДЕО
-            { category: 'video', name: 'CapCut', icon: 'fas fa-video', desc: 'Видеоредактор с ИИ-функциями.', tags: ['#видео'], free: true, blocked: false, rating: 4.5, url: 'https://www.capcut.com/' },
-            { category: 'video', name: 'Pika', icon: 'fas fa-film', desc: 'Генерация видео из текста и изображений.', tags: ['#видео'], free: true, blocked: false, rating: 4.4, url: 'https://pika.art/' },
+            { category: 'video', name: 'CapCut', icon: 'fas fa-video', desc: 'Видеоредактор с ИИ-функциями. Работает без VPN.', tags: ['#видео'], free: true, russia: true, rating: 4.5, url: 'https://www.capcut.com/' },
+            { category: 'video', name: 'Pika', icon: 'fas fa-film', desc: 'Генерация видео из текста. Работает без VPN.', tags: ['#видео'], free: true, russia: true, rating: 4.4, url: 'https://pika.art/' },
 
             // 🔍 ПОИСК
-            { category: 'search', name: 'Perplexity AI', icon: 'fas fa-search', desc: 'Поисковик с искусственным интеллектом.', tags: ['#поиск'], free: true, blocked: true, rating: 4.7, url: 'https://www.perplexity.ai/' },
-            { category: 'search', name: 'You.com', icon: 'fas fa-compass', desc: 'Поисковая система с интеграцией ИИ.', tags: ['#поиск'], free: true, blocked: true, rating: 4.2, url: 'https://you.com/' }
+            { category: 'search', name: 'Perplexity AI', icon: 'fas fa-search', desc: 'Поисковик с искусственным интеллектом. Требует VPN.', tags: ['#поиск', '#заблокировано'], free: true, russia: false, rating: 4.7, url: 'https://www.perplexity.ai/' },
+            { category: 'search', name: 'You.com', icon: 'fas fa-compass', desc: 'Поисковая система с интеграцией ИИ. Требует VPN.', tags: ['#поиск', '#заблокировано'], free: true, russia: false, rating: 4.2, url: 'https://you.com/' }
         ];
 
-        // Создаём карточки
         tools.forEach(tool => {
             const card = document.createElement('div');
             card.className = 'tool-card';
@@ -454,28 +435,16 @@
             card.dataset.name = tool.name;
             card.dataset.description = tool.desc;
             
-            // Формируем теги
             let tagsHtml = '';
             tool.tags.forEach(tag => {
-                tagsHtml += `<span class="tag">${tag}</span>`;
+                const tagClass = tag === '#заблокировано' ? 'blocked' : (tag === '#РФ' ? 'russia' : (tag === '#бесплатно' ? 'free' : (tag === '#популярно' ? 'popular' : '')));
+                tagsHtml += `<span class="tag ${tagClass}">${tag}</span>`;
             });
             
-            // Добавляем тег бесплатно если нужно
-            if (tool.free) {
-                tagsHtml += `<span class="tag free">#бесплатно</span>`;
-            }
+            if (tool.free) tagsHtml += `<span class="tag free">#бесплатно</span>`;
+            if (tool.russia) tagsHtml += `<span class="tag russia">#РФ</span>`;
+            if (tool.rating >= 4.7) tagsHtml += `<span class="tag popular">#популярно</span>`;
             
-            // Добавляем тег заблокировано если нужно
-            if (tool.blocked) {
-                tagsHtml += `<span class="tag blocked">#заблокировано_в_РФ</span>`;
-            }
-            
-            // Добавляем тег популярно если рейтинг высокий
-            if (tool.rating >= 4.7) {
-                tagsHtml += `<span class="tag popular">#популярно</span>`;
-            }
-            
-            // Формируем звёзды рейтинга
             const stars = '⭐'.repeat(Math.floor(tool.rating));
             
             card.innerHTML = `
@@ -494,13 +463,10 @@
             grid.appendChild(card);
         });
 
-        // Сортируем по алфавиту
         sortToolsAlphabetically();
-        
-        // Инициализация счётчика
         filterTools();
     });
-    // Эффект шапки при прокрутке
+
     window.addEventListener('scroll', function() {
         const header = document.querySelector('.header');
         if (window.scrollY > 50) {
