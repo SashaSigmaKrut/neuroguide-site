@@ -177,36 +177,61 @@
                 </p>
             </div>
         </div>
+        <!-- ВИДЫ ПРОМПТОВ (ОБНОВЛЕНО) -->
+        <h2 class="section-title">Виды <span>промптов</span></h2>
 
-        <!-- 5 ПРАВИЛ ПРОМПТОВ -->
-        <h2 class="section-title">5 золотых <span>правил</span></h2>
-        
         <div class="prompt-tips-grid">
-            <div class="rule-card">
-                <h4><i class="fas fa-1" style="margin-right: 10px;"></i> Будьте конкретны</h4>
-                <p>Вместо "напиши статью" → "напиши статью на 500 слов о пользе медитации для программистов".</p>
+            <!-- Прямая инструкция -->
+            <div class="rule-card" style="border-left: 4px solid #a688ff;">
+                <h4 style="display: flex; align-items: center; gap: 10px;">
+                    <span style="background: #a688ff; color: white; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 1rem;">📝</span>
+                    Прямая инструкция
+                </h4>
+                <p><strong>Instruction Prompt</strong> — четкий запрос на выполнение действия. Самый простой и распространенный тип.</p>
+                <div style="background: rgba(166, 136, 255, 0.1); border-radius: 12px; padding: 12px; margin-top: 12px; font-style: italic;">
+                    "Напиши пост для Instagram о пользе медитации"
+                </div>
             </div>
-            
-            <div class="rule-card">
-                <h4><i class="fas fa-2" style="margin-right: 10px;"></i> Укажите роль</h4>
-                <p>"Ты профессиональный маркетолог", "Ты учитель английского", "Ты шеф-повар".</p>
+
+            <!-- Ролевой промпт -->
+            <div class="rule-card" style="border-left: 4px solid #6cd0ff;">
+                <h4 style="display: flex; align-items: center; gap: 10px;">
+                    <span style="background: #6cd0ff; color: white; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 1rem;">🎭</span>
+                    Ролевой промпт
+                </h4>
+                <p><strong>Role-playing</strong> — задает модель поведения, улучшает стиль и качество ответов.</p>
+                <div style="background: rgba(108, 208, 255, 0.1); border-radius: 12px; padding: 12px; margin-top: 12px; font-style: italic;">
+                    "Ты опытный копирайтер с 10-летним стажем. Напиши продающий текст для нового продукта"
+                </div>
             </div>
-            
-            <div class="rule-card">
-                <h4><i class="fas fa-3" style="margin-right: 10px;"></i> Определите формат</h4>
-                <p>Таблица, список, эссе, диалог, инструкция, пост для Instagram, письмо.</p>
+
+            <!-- Few-shot промпт -->
+            <div class="rule-card" style="border-left: 4px solid #00c896;">
+                <h4 style="display: flex; align-items: center; gap: 10px;">
+                    <span style="background: #00c896; color: white; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 1rem;">🔢</span>
+                    Few-shot промпт
+                </h4>
+                <p><strong>Few-shot</strong> — включает примеры "вопрос-ответ" (обычно 2-5), чтобы ИИ понял нужный формат.</p>
+                <div style="background: rgba(0, 200, 150, 0.1); border-radius: 12px; padding: 12px; margin-top: 12px; font-style: italic; font-size: 0.9rem;">
+                    "Пример 1: Вопрос: Какая столица Франции? Ответ: Париж<br>
+                    Пример 2: Вопрос: Какая столица Италии? Ответ: Рим<br>
+                    Теперь ответь: Какая столица Испании?"
+                </div>
             </div>
-            
-            <div class="rule-card">
-                <h4><i class="fas fa-4" style="margin-right: 10px;"></i> Добавьте контекст</h4>
-                <p>Для кого? Зачем? Какая цель? "Для студентов", "Для продажи", "Чтобы объяснить ребёнку".</p>
-            </div>
-            
-            <div class="rule-card">
-                <h4><i class="fas fa-5" style="margin-right: 10px;"></i> Экспериментируйте</h4>
-                <p>Если ответ не понравился — переформулируйте, уточните, попросите другой вариант.</p>
+
+            <!-- Chain-of-thought -->
+            <div class="rule-card" style="border-left: 4px solid #ffaa00;">
+                <h4 style="display: flex; align-items: center; gap: 10px;">
+                    <span style="background: #ffaa00; color: white; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 1rem;">🧠</span>
+                    Цепочка рассуждений
+                </h4>
+                <p><strong>Chain-of-thought</strong> — просит ИИ думать пошагово, критически важно для логических задач.</p>
+                <div style="background: rgba(255, 170, 0, 0.1); border-radius: 12px; padding: 12px; margin-top: 12px; font-style: italic;">
+                    "Реши задачу шаг за шагом: У Маши 5 яблок, у Пети на 3 больше. Сколько всего яблок? Опиши свои рассуждения."
+                </div>
             </div>
         </div>
+
 
         <!-- ШПАРГАЛКА ДЛЯ РАЗНЫХ НЕЙРОСЕТЕЙ -->
         <h2 class="section-title">Промпты для разных <span>нейросетей</span></h2>
