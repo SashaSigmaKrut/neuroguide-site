@@ -98,25 +98,23 @@
 </head>
 <body>
     <div class="container">
-        <!-- ШАПКА (исправленная) -->
+        <!-- ШАПКА (ИСПРАВЛЕННАЯ - БЕЗ ЛИШНЕГО КОНТЕЙНЕРА) -->
         <header class="header">
-            <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                <div class="logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <div class="logo-text">
-                        <h1>AmukaB</h1>
-                        <p>освоим AI вместе</p>
-                    </div>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-brain"></i>
                 </div>
-                <nav class="nav">
-                    <a href="index.html">Главная</a>
-                    <a href="tools.html">Инструменты</a>
-                    <a href="#" class="active">Промпты</a>
-                    <a href="trainer.html">Тренажёр</a>
-                </nav>
+                <div class="logo-text">
+                    <h1>AmukaB</h1>
+                    <p>освоим AI вместе</p>
+                </div>
             </div>
+            <nav class="nav">
+                <a href="index.html">Главная</a>
+                <a href="tools.html">Инструменты</a>
+                <a href="#" class="active">Промпты</a>
+                <a href="trainer.html">Тренажёр</a>
+            </nav>
         </header>
 
         <!-- ССЫЛКА НАЗАД -->
@@ -177,7 +175,8 @@
                 </p>
             </div>
         </div>
-        <!-- ВИДЫ ПРОМПТОВ (ОБНОВЛЕНО) -->
+
+        <!-- ВИДЫ ПРОМПТОВ -->
         <h2 class="section-title">Виды <span>промптов</span></h2>
 
         <div class="prompt-tips-grid">
@@ -189,7 +188,7 @@
                 </h4>
                 <p><strong>Instruction Prompt</strong> — четкий запрос на выполнение действия. Самый простой и распространенный тип.</p>
                 <div style="background: rgba(166, 136, 255, 0.1); border-radius: 12px; padding: 12px; margin-top: 12px; font-style: italic;">
-                    "Напиши пост для Instagram о пользе медитации"
+                    "Напиши пост для VK о пользе медитации"
                 </div>
             </div>
 
@@ -231,7 +230,6 @@
                 </div>
             </div>
         </div>
-
 
         <!-- ШПАРГАЛКА ДЛЯ РАЗНЫХ НЕЙРОСЕТЕЙ -->
         <h2 class="section-title">Промпты для разных <span>нейросетей</span></h2>
