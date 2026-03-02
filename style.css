@@ -622,24 +622,25 @@ body {
     }
 
     .logo {
-        transform: scale(0.65) !important;
-        margin: -8px 0 !important;
-        gap: 4px !important;
+        transform: scale(0.85) !important;  /* Было 0.65, стало 0.85 */
+        margin: -5px 0 !important;
+        gap: 6px !important;
     }
 
     .logo-icon {
-        font-size: 1.5rem !important;
+        font-size: 1.9rem !important;  /* Было 1.5rem, стало 1.9rem */
     }
 
     .logo-text h1 {
-        font-size: 0.9rem !important;
-        line-height: 1 !important;
-    }
+        font-size: 1.2rem !important;  /* Было 0.9rem, стало 1.2rem */
+        line-height: 1.1 !important;
+    }   
 
     .logo-text p {
-        font-size: 0.45rem !important;
+        font-size: 0.6rem !important;  /* Было 0.45rem, стало 0.6rem */
         letter-spacing: 0.5px !important;
         margin-top: -2px !important;
+        display: block !important;     /* Показываем подпись */
     }
 
     .nav {
@@ -660,6 +661,8 @@ body {
     .dropdown-container {
         width: 100% !important;
         margin: 2px 0 0 !important;
+        display: flex !important;
+        justify-content: center !important;  /* Центрируем контейнер */
     }
 
     .dropdown-btn {
@@ -667,6 +670,10 @@ body {
         font-size: 0.65rem !important;
         gap: 3px !important;
         min-height: 28px !important;
+        width: auto !important;              /* Убираем ширину 100% */
+        min-width: 120px !important;         /* Минимальная ширина */
+        justify-content: center !important;
+        margin: 0 auto !important;           /* Центрируем саму кнопку */
     }
 
     .dropdown-btn i {
@@ -676,6 +683,11 @@ body {
     .dropdown-content {
         top: 110% !important;
         min-width: 200px !important;
+        left: 50% !important;                /* Центрируем выпадающее меню */
+        transform: translateX(-50%) translateY(-10px) !important;
+    }
+    .dropdown-container:hover .dropdown-content {
+    transform: translateX(-50%) translateY(0) !important;
     }
 
     .dropdown-item {
