@@ -717,3 +717,206 @@ body {
         margin: 20px 0 !important;
     }
 }
+/* 🔧 ФИНАЛЬНЫЕ ИСПРАВЛЕНИЯ ДЛЯ ТЕЛЕФОНА */
+@media (max-width: 768px) {
+
+    /* ===== 1. ШАПКА - ДЕЛАЕМ КОМПАКТНЕЕ ===== */
+    .header {
+        padding: 8px 0 !important;
+        gap: 5px !important;
+    }
+
+    .logo {
+        transform: scale(0.9) !important;
+        margin: -5px 0 !important;
+    }
+
+    .logo-icon {
+        font-size: 1.8rem !important;
+    }
+
+    .logo-text h1 {
+        font-size: 1.3rem !important;
+    }
+
+    .logo-text p {
+        font-size: 0.7rem !important;
+    }
+
+    .nav a {
+        font-size: 0.8rem !important;
+        padding: 4px 6px !important;
+    }
+
+    /* Кнопка "Начать" (dropdown) */
+    .dropdown-container {
+        margin-top: 0 !important;
+    }
+
+    .dropdown-btn {
+        padding: 6px 16px !important;
+        font-size: 0.9rem !important;
+    }
+
+    /* ===== 2. ГЛАВНАЯ - УБИРАЕМ ШИРИНУ ===== */
+    .hero {
+        padding: 10px 0 20px !important;
+    }
+
+    .hero-content h2 {
+        font-size: 1.8rem !important;
+        line-height: 1.2 !important;
+        word-break: break-word !important;
+    }
+
+    .hero-content p {
+        font-size: 1rem !important;
+    }
+
+    .ai-grid {
+        grid-template-columns: 1fr 1fr !important; /* оставляем 2 колонки */
+        gap: 8px !important;
+    }
+
+    .ai-card-small {
+        padding: 12px !important;
+    }
+
+    .ai-card-small i {
+        font-size: 1.8rem !important;
+    }
+
+    .ai-card-small h4 {
+        font-size: 1rem !important;
+    }
+
+    .ai-card-small p {
+        font-size: 0.8rem !important;
+    }
+
+    .hero-stats {
+        flex-wrap: wrap !important;
+        justify-content: space-around !important;
+        gap: 5px !important;
+    }
+
+    .stat-item {
+        min-width: 80px !important;
+    }
+
+    .stat-number {
+        font-size: 1.3rem !important;
+    }
+
+    .stat-label {
+        font-size: 0.8rem !important;
+    }
+
+    /* Кнопка случайного промпта на главной */
+    .random-prompt-btn {
+        padding: 12px 20px !important;
+        font-size: 1rem !important;
+        width: 100% !important;
+        margin: 10px 0 !important;
+    }
+
+    /* ===== 3. СТРАНИЦА "КАК ПИСАТЬ ПРОМПТЫ?" ===== */
+    .prompt-structure {
+        padding: 20px !important;
+        margin: 20px 0 !important;
+    }
+
+    .prompt-structure p {
+        font-size: 1rem !important;
+    }
+
+    .formula-box {
+        font-size: 0.95rem !important;
+        padding: 15px !important;
+        word-break: break-word !important;
+    }
+
+    .formula-box span {
+        display: inline-block !important;
+        margin: 3px 0 !important;
+    }
+
+    /* Контейнеры с хорошим/плохим промптом */
+    [style*="display: grid; grid-template-columns: 1fr 1fr;"] {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .example-bad, .example-good {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 20px !important;
+        box-sizing: border-box !important;
+    }
+
+    .example-bad h3, .example-good h3 {
+        font-size: 1.2rem !important;
+    }
+
+    .example-bad p, .example-good p {
+        font-size: 0.95rem !important;
+        word-wrap: break-word !important;
+    }
+
+    /* Сетка с 5 правилами */
+    .prompt-tips-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .rule-card {
+        padding: 20px !important;
+        margin: 0 !important;
+    }
+
+    .rule-card h4 {
+        font-size: 1.2rem !important;
+    }
+
+    .rule-card p {
+        font-size: 0.95rem !important;
+    }
+
+    /* Блок с примерами для нейросетей */
+    [style*="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Синяя кнопка внизу */
+    .cta {
+        padding: 30px 20px !important;
+    }
+
+    .cta h3 {
+        font-size: 1.5rem !important;
+    }
+
+    .cta p {
+        font-size: 0.95rem !important;
+    }
+}
+
+/* 📱 ДЛЯ ОЧЕНЬ МАЛЕНЬКИХ ЭКРАНОВ */
+@media (max-width: 380px) {
+    .hero-content h2 {
+        font-size: 1.5rem !important;
+    }
+
+    .logo {
+        transform: scale(0.8) !important;
+    }
+
+    .nav a {
+        font-size: 0.7rem !important;
+        padding: 3px 5px !important;
+    }
+
+    .ai-grid {
+        grid-template-columns: 1fr !important; /* на совсем узких — одна колонка */
+    }
+}
