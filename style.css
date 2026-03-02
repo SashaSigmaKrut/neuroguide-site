@@ -443,36 +443,277 @@ body {
 }
 
 
-/* Адаптивность */
+/* 📱 ============================================ */
+/*    МОБИЛЬНАЯ АДАПТАЦИЯ ДЛЯ ВСЕХ СТРАНИЦ       */
+/* ============================================ */
+
 @media (max-width: 768px) {
+
+    /* === ОБЩИЕ ПРАВИЛА === */
+    .container {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    body {
+        overflow-x: hidden !important;
+    }
+
+    /* === ШАПКА === */
     .header {
-        padding: 12px calc(50vw - 50% + 15px);
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 15px !important;
+        padding: 15px 0 !important;
+        height: auto !important;
     }
-    .hero {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-    .hero-content p {
-        max-width: 100%;
-    }
-    .hero-stats {
-        justify-content: center;
-    }
-    .header {
-        flex-direction: column;
-        text-align: center;
-    }
+
     .nav {
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 10px !important;
     }
-    .tips {
-        grid-template-columns: 1fr;
+
+    .nav a {
+        font-size: 0.9rem !important;
+        padding: 5px 8px !important;
     }
-    .cta {
-        padding: 40px 20px;
+
+    /* === КНОПКИ ВЕЗДЕ === */
+    .primary-btn, .secondary-btn, .tool-btn, .modal-btn, .cta-button {
+        width: 100% !important;
+        min-height: 50px !important;
+        font-size: 1.1rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 5px 0 !important;
     }
-    .cta h3 {
-        font-size: 1.8rem;
+
+    .button-group {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    /* === СТРАНИЦА ИНСТРУМЕНТОВ (tools.html) === */
+    .tools-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+
+    .tool-card {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 20px !important;
+        box-sizing: border-box !important;
+    }
+
+    .tool-card p {
+        font-size: 0.95rem !important;
+        line-height: 1.5 !important;
+        min-height: auto !important;
+    }
+
+    .tool-footer {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+    }
+
+    .tool-footer .rating {
+        text-align: center !important;
+        margin-bottom: 5px !important;
+    }
+
+    .tool-tags {
+        justify-content: center !important;
+    }
+
+    /* Фильтры и поиск на tools.html */
+    .category-tabs {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        justify-content: center !important;
+    }
+
+    .category-btn {
+        padding: 8px 15px !important;
+        font-size: 0.9rem !important;
+        flex: 0 1 auto !important;
+    }
+
+    .search-container {
+        width: 100% !important;
+        margin: 20px auto !important;
+    }
+
+    .search-container input {
+        font-size: 1rem !important;
+        padding: 15px 20px 15px 45px !important;
+    }
+
+    /* === СТРАНИЦА ТРЕНАЖЁРА (trainer.html) === */
+    .model-selector {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+    }
+
+    .model-card {
+        width: 100% !important;
+        min-width: auto !important;
+        margin: 0 !important;
+        padding: 15px !important;
+    }
+
+    .input-container {
+        padding: 25px 15px !important;
+    }
+
+    .prompt-input {
+        font-size: 1rem !important;
+        padding: 20px 15px !important;
+        min-height: 120px !important;
+    }
+
+    .response-card {
+        padding: 25px 15px !important;
+    }
+
+    .response-header {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 10px !important;
+    }
+
+    .response-content {
+        font-size: 0.95rem !important;
+        padding: 20px !important;
+        word-wrap: break-word !important;
+    }
+
+    .examples-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .example-card {
+        padding: 20px !important;
+    }
+
+    .example-card p {
+        font-size: 0.95rem !important;
+    }
+
+    /* Блок оценки на тренажёре */
+    .evaluation-card {
+        padding: 20px 15px !important;
+    }
+
+    .evaluation-header {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 10px !important;
+    }
+
+    .evaluation-content {
+        font-size: 0.9rem !important;
+        padding: 15px !important;
+    }
+
+    /* === СТРАНИЦА ПРОМПТОВ (prompts.html) === */
+    .prompt-structure {
+        padding: 25px 15px !important;
+    }
+
+    .formula-box {
+        font-size: 1rem !important;
+        padding: 15px !important;
+    }
+
+    .rule-card {
+        padding: 20px !important;
+    }
+
+    .rule-card h4 {
+        font-size: 1.2rem !important;
+    }
+
+    .rule-card p {
+        font-size: 0.95rem !important;
+    }
+
+    .example-bad, .example-good {
+        padding: 15px !important;
+    }
+
+    .example-bad p, .example-good p {
+        font-size: 1rem !important;
+    }
+
+    /* === МОДАЛЬНОЕ ОКНО (на главной) === */
+    .modal-content {
+        width: 90% !important;
+        padding: 25px 20px !important;
+        margin: 0 10px !important;
+    }
+
+    .modal-prompt {
+        font-size: 1rem !important;
+        padding: 20px !important;
+    }
+
+    .modal-buttons {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    /* === ФУТЕР === */
+    .footer {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 15px !important;
+        padding: 25px 0 !important;
+    }
+
+    .social-links {
+        justify-content: center !important;
+        gap: 25px !important;
+    }
+}
+
+/* 📱 ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ (до 480px) */
+@media (max-width: 480px) {
+    .hero-content h2 {
+        font-size: 1.8rem !important;
+    }
+
+    .stat-number {
+        font-size: 1.5rem !important;
+    }
+
+    .step-number {
+        font-size: 2.5rem !important;
+    }
+
+    .tool-icon {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 1.8rem !important;
+    }
+
+    .tool-card h3 {
+        font-size: 1.3rem !important;
+    }
+
+    .model-name {
+        font-size: 1.1rem !important;
+    }
+
+    .back-link {
+        font-size: 0.95rem !important;
+        margin: 20px 0 !important;
     }
 }
