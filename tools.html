@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Инструменты | amukaB</title>
+    <title>Инструменты | AmukaB</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -147,6 +147,7 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         const tools = [
+            // 📝 ТЕКСТОВЫЕ
             { category: 'text', name: 'ChatGPT', icon: 'fab fa-openai', desc: 'Популярнейший ИИ-ассистент. В России доступ ограничен.', tags: ['#текст', '#популярно', '#ограничено'], free: false, russia: false, rating: 4.9, url: 'https://chat.openai.com/' },
             { category: 'text', name: 'Claude', icon: 'fas fa-robot', desc: 'ИИ от Anthropic. В России не работает.', tags: ['#текст', '#ограничено'], free: false, russia: false, rating: 4.8, url: 'https://claude.ai/' },
             { category: 'text', name: 'Copy.ai', icon: 'fas fa-copy', desc: 'Генерация маркетинговых текстов. Работает с ограничениями.', tags: ['#текст', '#ограничено'], free: true, russia: false, rating: 4.3, url: 'https://www.copy.ai/' },
@@ -157,6 +158,7 @@
             { category: 'text', name: 'Rytr', icon: 'fas fa-pen-fancy', desc: 'Помощник для написания текстов. В России почти не работает.', tags: ['#текст', '#ограничено'], free: false, russia: false, rating: 4.2, url: 'https://rytr.me/' },
             { category: 'text', name: 'Writesonic', icon: 'fas fa-bolt', desc: 'Генерация контента для соцсетей. Работает с ограничениями.', tags: ['#текст', '#ограничено'], free: true, russia: false, rating: 4.3, url: 'https://writesonic.com/' },
             { category: 'text', name: 'YandexGPT', icon: 'fab fa-yandex', desc: 'Нейросеть от Яндекса. Работает в РФ.', tags: ['#текст', '#РФ'], free: true, russia: true, rating: 4.5, url: 'https://ya.ru/' },
+            // 🎨 ИЗОБРАЖЕНИЯ
             { category: 'image', name: 'Adobe Firefly', icon: 'fab fa-adobe', desc: 'Генерация изображений через Adobe. В России не работает.', tags: ['#изображения', '#ограничено'], free: false, russia: false, rating: 4.6, url: 'https://www.adobe.com/products/firefly.html' },
             { category: 'image', name: 'FusionBrain', icon: 'fas fa-microchip', desc: 'Платформа от SberDevices. Работает в РФ.', tags: ['#изображения', '#РФ'], free: true, russia: true, rating: 4.1, url: 'https://fusionbrain.ai/' },
             { category: 'image', name: 'Kandinsky 3.0', icon: 'fas fa-palette', desc: 'Нейросеть Сбера для генерации изображений. Работает в РФ.', tags: ['#изображения', '#РФ'], free: true, russia: true, rating: 4.8, url: 'https://www.sberbank.ru/ru/person/kandinsky' },
@@ -165,17 +167,21 @@
             { category: 'image', name: 'Photoshop AI', icon: 'fas fa-camera', desc: 'Нейросети в Adobe Photoshop. В России не работает.', tags: ['#изображения', '#ограничено'], free: false, russia: false, rating: 4.7, url: 'https://www.adobe.com/products/photoshop.html' },
             { category: 'image', name: 'Playground AI', icon: 'fas fa-play', desc: 'Платформа для генерации изображений. Работает в РФ.', tags: ['#изображения', '#РФ'], free: true, russia: true, rating: 4.4, url: 'https://playgroundai.com/' },
             { category: 'image', name: 'Shedevrum', icon: 'fab fa-yandex', desc: 'Генерация изображений от Яндекса. Работает в РФ.', tags: ['#изображения', '#РФ'], free: true, russia: true, rating: 4.3, url: 'https://shedevrum.ai/' },
+            // 🎵 АУДИО
             { category: 'audio', name: 'AIVA', icon: 'fas fa-music', desc: 'Генерация классической музыки. Доступ ограничен.', tags: ['#аудио', '#ограничено'], free: true, russia: false, rating: 4.5, url: 'https://www.aiva.ai/' },
             { category: 'audio', name: 'ElevenLabs', icon: 'fas fa-microphone', desc: 'Озвучка текста. Доступ ограничен.', tags: ['#аудио', '#ограничено'], free: true, russia: false, rating: 4.9, url: 'https://elevenlabs.io/' },
             { category: 'audio', name: 'Soundraw', icon: 'fas fa-headphones', desc: 'Генерация музыки. Доступ ограничен.', tags: ['#аудио', '#ограничено'], free: true, russia: false, rating: 4.3, url: 'https://soundraw.io/' },
             { category: 'audio', name: 'Suno AI', icon: 'fas fa-music', desc: 'Генерация песен и музыки. Работает в РФ.', tags: ['#аудио', '#РФ'], free: true, russia: true, rating: 4.7, url: 'https://suno.com/' },
             { category: 'audio', name: 'Voicemod', icon: 'fas fa-voice', desc: 'Изменение голоса. Работает в РФ.', tags: ['#аудио', '#РФ'], free: true, russia: true, rating: 4.4, url: 'https://www.voicemod.net/' },
+            // 💻 КОД
             { category: 'code', name: 'Codeium', icon: 'fas fa-bolt', desc: 'Бесплатный аналог Copilot. Работает в РФ.', tags: ['#код', '#РФ'], free: true, russia: true, rating: 4.5, url: 'https://codeium.com/' },
             { category: 'code', name: 'GitHub Copilot', icon: 'fab fa-github', desc: 'ИИ-помощник для кода. Доступ ограничен.', tags: ['#код', '#ограничено'], free: false, russia: false, rating: 4.8, url: 'https://github.com/features/copilot' },
             { category: 'code', name: 'Replit AI', icon: 'fas fa-code', desc: 'ИИ-помощник в Replit. Работает в РФ.', tags: ['#код', '#РФ'], free: true, russia: true, rating: 4.3, url: 'https://replit.com/' },
             { category: 'code', name: 'Tabnine', icon: 'fas fa-code', desc: 'Автодополнение кода. Работает в РФ.', tags: ['#код', '#РФ'], free: true, russia: true, rating: 4.3, url: 'https://www.tabnine.com/' },
+            // 🎥 ВИДЕО
             { category: 'video', name: 'CapCut', icon: 'fas fa-video', desc: 'Видеоредактор с ИИ. В России может работать нестабильно.', tags: ['#видео', '#ограничено'], free: true, russia: false, rating: 4.5, url: 'https://www.capcut.com/' },
             { category: 'video', name: 'Pika', icon: 'fas fa-film', desc: 'Генерация видео из текста. Доступ ограничен.', tags: ['#видео', '#ограничено'], free: true, russia: false, rating: 4.4, url: 'https://pika.art/' },
+            // 🔍 ПОИСК
             { category: 'search', name: 'Perplexity AI', icon: 'fas fa-search', desc: 'Поисковик с ИИ. Доступ ограничен.', tags: ['#поиск', '#ограничено'], free: true, russia: false, rating: 4.7, url: 'https://www.perplexity.ai/' },
             { category: 'search', name: 'You.com', icon: 'fas fa-compass', desc: 'Поиск с ИИ. Доступ ограничен.', tags: ['#поиск', '#ограничено'], free: true, russia: false, rating: 4.2, url: 'https://you.com/' }
         ];
@@ -188,8 +194,15 @@
             card.dataset.name = tool.name;
             card.dataset.description = tool.desc;
             
+            // Формируем теги БЕЗ дублирования
+            let allTags = [...tool.tags];
+            
+            if (tool.free && !allTags.includes('#бесплатно')) allTags.push('#бесплатно');
+            if (tool.russia && !allTags.includes('#РФ')) allTags.push('#РФ');
+            if (tool.rating >= 4.7 && !allTags.includes('#популярно')) allTags.push('#популярно');
+            
             let tagsHtml = '';
-            tool.tags.forEach(tag => {
+            allTags.forEach(tag => {
                 let tagClass = '';
                 if (tag === '#ограничено') tagClass = 'limited';
                 else if (tag === '#РФ') tagClass = 'russia';
@@ -197,9 +210,6 @@
                 else if (tag === '#популярно') tagClass = 'popular';
                 tagsHtml += `<span class="tag ${tagClass}">${tag}</span>`;
             });
-            if (tool.free) tagsHtml += `<span class="tag free">#бесплатно</span>`;
-            if (tool.russia) tagsHtml += `<span class="tag russia">#РФ</span>`;
-            if (tool.rating >= 4.7) tagsHtml += `<span class="tag popular">#популярно</span>`;
             
             const stars = '⭐'.repeat(Math.floor(tool.rating));
             card.innerHTML = `
