@@ -245,9 +245,11 @@ async function askGroq(prompt, modelKey) {
 }
 
 // Функция для оценки промпта (тоже через прокси)
+// ОЦЕНКА ПРОМПТА (через тот же прокси, что и основной запрос)
 async function evaluatePrompt(prompt, modelKey) {
     const model = MODELS[modelKey];
-    const PROXY_URL = 'https://neuroguide-site.vercel.app/api/groq';
+    const PROXY = 'https://cors-anywhere.herokuapp.com/';
+    const API_URL = 'https://api.groq.com/openai/v1/chat/completions';
     
     const evaluationPrompt = `Ты — строгий эксперт по оценке промптов. Оцени этот промпт честно и объективно.
 
@@ -268,124 +270,46 @@ async function evaluatePrompt(prompt, modelKey) {
 Совет: [конкретный совет по улучшению]`;
 
     try {
-        const response = await fetch(PROXY_URL, {
+        console.log('🟡 Отправляем запрос на оценку промпта...');
+        
+        const response = await fetch(PROXY + API_URL, {
             method: 'POST',
             headers: {
+                'Authorization': `Bearer ${GROQ_API_KEY}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                prompt: evaluationPrompt,
                 model: model.model,
-                temperature: 0.4
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'Ты строгий, но справедливый эксперт. Оцениваешь промпты от 1 до 10. Никогда не ставишь 10 просто так. Используй всю шкалу.'
+                    },
+                    {
+                        role: 'user',
+                        content: evaluationPrompt
+                    }
+                ],
+                temperature: 0.4,
+                max_tokens: 500
             })
         });
         
+        if (!response.ok) {
+            throw new Error(`Ошибка ${response.status}`);
+        }
+        
         const data = await response.json();
-        return data.choices[0]?.message?.content || 'Оценка: 5\nПлюсы: -\nМинусы: -\nСовет: Попробуйте уточнить запрос';
+        const result = data.choices[0]?.message?.content;
+        
+        console.log('✅ Оценка получена');
+        return result || 'Оценка: 5\nПлюсы: -\nМинусы: -\nСовет: Попробуйте уточнить запрос';
         
     } catch (error) {
-        console.error('Ошибка при оценке:', error);
+        console.error('❌ Ошибка при оценке:', error);
         return 'Оценка временно недоступна';
     }
 }
-
-// Функция для определения цвета на основе оценки
-function getScoreColor(score) {
-    if (score <= 3) return '#ff4444'; // Красный
-    if (score <= 5) return '#ff8844'; // Оранжевый
-    if (score <= 7) return '#ffcc44'; // Желтый
-    if (score <= 8) return '#44ff88'; // Светло-зеленый
-    return '#00cc66'; // Темно-зеленый (9-10)
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const modelCards = document.querySelectorAll('.model-card');
-    const promptInput = document.getElementById('promptInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const clearBtn = document.getElementById('clearBtn');
-    const responseArea = document.getElementById('responseArea');
-    const aiResponse = document.getElementById('aiResponse');
-    const modelInfo = document.getElementById('modelInfo');
-    const evaluationArea = document.getElementById('evaluationArea');
-    const evaluationContent = document.getElementById('evaluationContent');
-
-    if (!sendBtn || !promptInput) return;
-
-    modelCards.forEach(card => {
-        card.addEventListener('click', function() {
-            modelCards.forEach(c => c.classList.remove('active'));
-            this.classList.add('active');
-            currentModel = this.dataset.model;
-            if (modelInfo) {
-                modelInfo.textContent = `Модель: ${MODELS[currentModel].name}`;
-            }
-        });
-    });
-
-    // ОБНОВЛЁННЫЙ ОБРАБОТЧИК С ОЦЕНКОЙ И ЦВЕТОМ
-    sendBtn.addEventListener('click', async function() {
-        const prompt = promptInput.value.trim();
-        
-        if (!prompt) {
-            alert('Напишите промпт!');
-            return;
-        }
-        
-        aiResponse.innerHTML = '<div class="loader"></div><p style="text-align:center;">Groq думает...</p>';
-        responseArea.style.display = 'block';
-        evaluationArea.style.display = 'none';
-        
-        if (modelInfo) {
-            modelInfo.textContent = `Модель: ${MODELS[currentModel].name} (отправка...)`;
-        }
-
-        const result = await askGroq(prompt, currentModel);
-        
-        if (result.success) {
-            aiResponse.innerHTML = result.message.replace(/\n/g, '<br>');
-            modelInfo.textContent = `Модель: ${MODELS[currentModel].name} (ответ получен)`;
-            
-            // Получаем оценку промпта
-            const evaluation = await evaluatePrompt(prompt, currentModel);
-            
-            // Извлекаем число из текста оценки
-            const scoreMatch = evaluation.match(/Оценка:\s*(\d+)/i);
-            let score = 5; // По умолчанию
-            
-            if (scoreMatch && scoreMatch[1]) {
-                score = parseInt(scoreMatch[1]);
-                // Ограничиваем от 1 до 10
-                score = Math.min(10, Math.max(1, score));
-            }
-            
-            // Получаем цвет для этой оценки
-            const scoreColor = getScoreColor(score);
-            
-            // Применяем цвет к блоку оценки
-            document.querySelector('.evaluation-card').style.borderColor = scoreColor;
-            document.querySelector('.evaluation-avatar').style.background = scoreColor;
-            
-            evaluationContent.innerHTML = evaluation.replace(/\n/g, '<br>');
-            evaluationArea.style.display = 'block';
-        } else {
-            aiResponse.innerHTML = result.message;
-            modelInfo.textContent = `Модель: ${MODELS[currentModel].name} (ошибка)`;
-        }
-    });
-
-    // ОБНОВЛЁННЫЙ ОЧИСТКА
-    clearBtn.addEventListener('click', function() {
-        promptInput.value = '';
-        responseArea.style.display = 'none';
-        evaluationArea.style.display = 'none';
-    });
-
-    promptInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && e.ctrlKey) {
-            sendBtn.click();
-        }
-    });
-});
 
 // Эффект шапки при прокрутке
 window.addEventListener('scroll', function() {
